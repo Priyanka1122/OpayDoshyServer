@@ -1,0 +1,8 @@
+module.exports = {
+    MESSAGES: {
+        EMAIL_ALREDAY_EXIT: "EMAIL_ALREDAY_EXIT",
+        EMPTY_LIST: "EMPTY_LIST",
+        FETCHED_SUCCESSFULLY: "FETCHED_SUCCESSFULLY",
+        
+    },
+}
