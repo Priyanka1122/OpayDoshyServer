@@ -106,7 +106,7 @@ async function addUser(req, res, next) {
 
          if(user){
           if (user.user_status === true) {
-            return res.status(200).send({ status: false, msg: 'User already exist.' })
+            return res.status(200).send({ status: false, msg: 'User already exist.', code: 2 })
           }
           else if(user.user_status === false){
 
@@ -199,7 +199,7 @@ function sendOTP(){
     }
   }
 
-  async function VerifyOtp(req,res,next) {
+   async function VerifyOtp(req,res,next) {
     try {
     const { auth_key } = req.headers;
     const { otp } = req.body;
@@ -478,7 +478,7 @@ catch (err) {
 
  async function  sendmail(req,res,next) {
    try{
-    const { auth_key,security_key } = req.headers;
+    const { auth_key, security_key } = req.headers;
     const { email } = req.body;
     
     if (security_key === undefined || security_key === null || security_key === "") return res.json({ status: false, msg: 'Please provide the security key.' })
@@ -587,7 +587,7 @@ let user = await Customer.findOne({ auth_key: auth_key});//Finding the specific 
    if (current_pin === undefined || current_pin === null || current_pin === "") return res.json({ status: false, msg: 'Please provide the current pin.' });
 
    
-   if(user.pin.toString() !== current_pin) return res.json({status:false ,msg:`Current PIN doesn't match`});
+   if(user.pin.toString() !== current_pin) return res.json({status:false ,msg:`Current PIN entered is incorrect`});
 
    if (new_pin === undefined || new_pin === null || new_pin === "") return res.json({ status: false, msg: 'Please provide the new pin.'});
 

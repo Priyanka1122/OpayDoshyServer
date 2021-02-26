@@ -1,7 +1,5 @@
 const mongoose = require("mongoose");
 const ObjectId = mongoose.Types.ObjectId;
-
-
 const OpayWork =require("../../models/opaywork");
 const model= require("../../models/index");
 const { required } = require('joi');
@@ -17,30 +15,17 @@ const Faqs=require("../../models/faqs");
 const Contactus=require("../../models/contactus");
 const termsPrivacy=require("../../models/termsPrivacy");
 const BordBiller =require("../../models/onbordBiller");
-const NewBill =require("../../models/newBill");
-
-
-
-
+const NewBill =  require("../../models/newBill");
+const arraySort = require('array-sort');
 const filesUpload = require('../../logic/uploadFiles').uploadFile;
-
 const Notificationlist=require("../../models/notificationlist");
-
-
-
 const Admin =require("../../models/admin");
-
 const termsCondition =require("../../models/termsCondition");
-
 const filesUpload2 = require('../../logic/uploadFile1').uploadFile1;
+const sendEmail = require('../../logic/send_email') //function to send the email
 //console.log(filesUpload2)
-
-
-
 const timestamp = Date.now();
-
 const { body } = require("express-validator");
-
 exports.adminlogin=adminlogin;
 exports.adminupDate=adminupDate;
 exports.adminprofile=adminprofile;
@@ -133,13 +118,16 @@ async function adminlogin(req,res,next) {
 
 async function adminupDate(req,res,next) {
      try{
-          let{ id} =req.params
-          
 
+         var ERRORS = ['', null, undefined];
+
+          let{ id} =req.params
+      
           const uploadFile = await filesUpload(req, res, [{ name: 'image' }], config.userFilePath);
           console.log(req.files.image)
           const data = req.body;
           data.image = uploadFile[0].imageName;
+          var uploadedPic = uploadFile[0].imageName;
           var data1 = data.image
           console.log("+++++++++++++++++++++++++++",data1)
          let { admin_name, admin_email, admin_phone,password,admin_address,admin_country,admin_state,newpassword } = req.body;
@@ -197,17 +185,7 @@ async function adminupDate(req,res,next) {
                               //      var admin_image1=data1;
                               //      }
 
-                              if (req.body.image == undefined) {
-                                   var image1 = User.admin_image;
-                                 }
-                           
-                                 else if (data1 == "public/images/default/main.png") {
-                                   var image1 = User.admin_image
-                                 }
-                                 else {
-                           
-                                   var image1 =  data1;
-                                 }
+
 
                                  if (newpassword === undefined || newpassword === null || newpassword === ""){
                                   var password2=User.password;
@@ -241,9 +219,9 @@ async function adminupDate(req,res,next) {
                                           //    var password1=User.password;
                                           //    }
                                           // }
-                                        
 
-                                     Admin.updateMany({_id:id}, {
+                                          var newData = 
+                                          {
                                              admin_name:admin_name1,
                                              admin_email:admin_email1,
                                              admin_phone:admin_phone1,
@@ -251,12 +229,22 @@ async function adminupDate(req,res,next) {
                                              admin_address:admin_address1,
                                              admin_country:admin_country1,
                                              admin_state:admin_state1,
-                                             admin_image:image1,
-                                             
+                                              
+                                           
+                                          }
 
 
-                                             
-                                          }, function(err, affected, resp) {
+                               if (ERRORS.indexOf(uploadedPic) >= 0) {
+                                  
+                                 }
+                           
+                                 else {
+                                    newData['admin_image'] = data1
+                                   
+                                 }
+                                        
+
+                                     Admin.updateMany({_id:id}, newData, function(err, affected, resp) {
                                             Admin.findOne({ _id:id }, (err, data) => {
 
                                               if (!err) {
@@ -407,7 +395,7 @@ async function alluserlist(req,res,next) {
           //      })
 
           Customer.find({}).sort({_id:-1}).exec(function(err,docs) {
-            return res.send({ status: true,msg: 'All User List.', data: docs})
+            return res.send({ status: true,msg: 'All User List.', data: arraySort(docs,  ['user_OID'], {reverse: false})})
           });
 
      }
@@ -470,9 +458,20 @@ async function update_user_details(req,res,next) {
           data.image = uploadFile[0].imageName;
           var data1 = data.image
 
-          let { first_name, middle_name, last_name,address,dob,mobile,email,licenceState,licenceNumber,newpin,pin } = req.body;
+          let { first_name, middle_name, last_name,address,dob,mobile,email,licenceState,licenceNumber,newpin,pin, notes, active_status } = req.body;
 
           User = await Customer.findOne({ user_OID:user_OID });
+
+          var EmailExists = await Customer.findOne({ user_OID: { "$ne": user_OID}, email:  email});
+
+          if(EmailExists!=null){
+            console.log('not coming');
+
+                     
+                     return res.json({ status: false, msg: `This email is being used by another user.`});
+          }else{
+
+
           if (User === null || User === undefined || !User) return res.json({ status: false, msg: `User doesn't exist.`});
 
           if (first_name === undefined || first_name === null ||first_name === ""){
@@ -522,10 +521,10 @@ async function update_user_details(req,res,next) {
                                         var mobile1=mobile;
                                         }
                                         if (email === undefined || email === null ||email === ""){
-                                             var email1=User.email;
+                                             var email1 = User.email;
                                              }
                                             else{
-                                             var email1=email;
+                                             var email1 = email;
                                              }
 
                                              if (licenceState === undefined || licenceState === null ||licenceState === ""){
@@ -580,6 +579,16 @@ async function update_user_details(req,res,next) {
                                                                       var password1=User.pin;
                                                                       }
                                                                    }
+
+                                                              if(User.email == email){
+
+                                                                      console.log('will not send email');
+
+                                                              }else{
+                                                                console.log('will send email');
+                                                                sendmail1(email, User.auth_key);
+
+                                                              }
                                                                  
 
                                                                   Customer.updateMany({user_OID:user_OID}, {
@@ -593,11 +602,15 @@ async function update_user_details(req,res,next) {
                                                                     //  licenceState:licenceState1,
                                                                      // licenceNumber:licenceNumber1,
                                                                       pin:password1,
+                                                                      notes:notes,
                                                                       image:image1,
-                                                                      updatedAt:timestamp
+                                                                      updatedAt:timestamp,
+                                                                       active_status:active_status
 
                                                                      }, function(err, affected, resp) {
                                                                       // console.log("------------------Neeraj",err)
+
+
                                                                        
                                                                       Customer.findOne({ user_OID:user_OID }, (err, data1) => {
                          
@@ -611,14 +624,15 @@ async function update_user_details(req,res,next) {
                                                                       })
                                                                    })
 
-                                                                  // console.log(user_OID)
-                         
-                                                                  
-                                                                   
 
+
+          }
+
+                                
      
      }
      catch (err) {
+      console.log(err);
           return res.status(401).send({ status: false, msg: 'Something Went Wrong.Please Try Again!' })
         }
 }
@@ -1051,6 +1065,7 @@ if (Biller_Contact_Email === undefined || Biller_Contact_Email === null || Bille
      Biller_Contact_Person:Biller_Contact_Person,
      Biller_Contact_Number:Biller_Contact_Number,
      Biller_Contact_Email:Biller_Contact_Email,
+     BBC:data.BBC,
      image:data1,
      createdAt: timestamp
  
@@ -1081,7 +1096,7 @@ if (Biller_Contact_Email === undefined || Biller_Contact_Email === null || Bille
  async function  get_biller_list(req,res,next) {
   try{
   BordBiller.find({}).sort({_id:-1}).exec(function(err,docs) {
-    return res.send({ status: true,msg: 'Biller List .', data: docs})
+    return res.send({ status: true, msg: 'Biller List .', data: arraySort(docs,  ['Biller_OID'], {reverse: false})})
   });
   }
   catch(err){
@@ -1112,7 +1127,9 @@ async function  current_bills_list(req,res,next) {
 
 ])
 
-return res.send({ status: true,msg: 'Current Bills List .', data: currentbill})
+return  
+
+ res.send({ status: true,msg: 'Current Bills List .', data: arraySort(currentbill, ['createdAt'], {reverse: true}) })
   // NewBill.find({ Bill_Status: false }, (err, data) => {
                          
   //         if (!err) {
@@ -1255,6 +1272,8 @@ async function billerUpdate(req,res,next) {
                 Biller_Contact_Person:Biller_Contact_Person1,
                 Biller_Contact_Number:Biller_Contact_Number1,
                 Biller_Contact_Email:Biller_Contact_Email1,
+                BBC: data.BBC,
+                notes: data.notes,
                 image:image1,
                 updatedAt:timestamp
                }, function(err, affected, resp) {
@@ -1361,28 +1380,32 @@ async function view_bills(req,res,next) {
   var dict = {};
   try{
     let{ Bill_OID} =req.params
-    NewBill.findOne({ "Bill_OID":Bill_OID }, (err, data) => {                      
+    NewBill.findOne({ "Bill_OID":Bill_OID }, async (err, data) => {                      
  
-      Customer.findOne({ user_OID: data.User_OID }, (err, userinfo) => {
+      Customer.findOne({ user_OID: data.User_OID }, async (err, userinfo) => {
+
+        var bordBillerDetails = await   BordBiller.findOne({ Biller_OID: data.Biller_OID});
  
         dict = {
-          "_id": data._id,
-          "Bill_Status": data.Bill_Status,
-          "Bill_OID": data.Bill_OID,
-          "User_OID": data.User_OID,
-          "Biller_OID": data.Biller_OID,
-          "Bills_Name": data.Bills_Name,
-          "Biller_Bill_ID": data.Biller_Bill_ID,
-          "Bill_Amount": data.Bill_Amount,
-          "Bill_Due_Date": data.Bill_Due_Date,
-          "Direct_Debit_Date": data.Direct_Debit_Date,
-          "Direct_Debit_Amount": data.Direct_Debit_Amount,
-          "Bpay_Biller_ID": data.Bpay_Biller_ID,
-          "Bpay_Biller_CRN": data.Bpay_Biller_CRN,
-          "Image": data.Image,
-          "createdAt": data.createdAt,
-          "Notes": data.Notes,
-          "UserData": userinfo
+            "_id": data._id,
+            "Bill_Status": data.Bill_Status,
+            "Bill_OID": data.Bill_OID,
+            "User_OID": data.User_OID,
+            "UserData": userinfo,
+            "Biller_OID": data.Biller_OID,
+            "bordBillerDetails" : bordBillerDetails,
+            "Bills_Name": data.Bills_Name,
+            "Biller_Bill_ID": data.Biller_Bill_ID,
+            "Bill_Amount": data.Bill_Amount,
+            "Bill_Due_Date": data.Bill_Due_Date,
+            "Bill_Issue_Date": data.Bill_Issue_Date,
+            "Direct_Debit_Date": data.Direct_Debit_Date,
+            "Direct_Debit_Amount": data.Direct_Debit_Amount,
+            "Bpay_Biller_ID": data.Bpay_Biller_ID,
+            "Bpay_Biller_CRN": data.Bpay_Biller_CRN,
+            "Image": data.Image,
+            "createdAt": data.createdAt,
+            "Notes": data.Notes,
         };
  
         return res.send({ status: true,msg: 'Bill Details .', data: dict })
@@ -1549,7 +1572,12 @@ async function  get_terms_condition(req,res,next) {
 //-----------------------------------------------------------------------------------
 
 async function add_newbills(req,res,next) {
+
+
+
   try{
+
+
    
     
     const uploadFile = await filesUpload(req, res, [{ name: 'image' }], config.userFilePath);
@@ -1557,16 +1585,17 @@ async function add_newbills(req,res,next) {
     const data = req.body;
     data.image = uploadFile[0].imageName;
     var dataimage = data.image
-    let { User_OID,Biller_OID,Bills_Name,Biller_Bill_ID,Bill_Amount,Bill_Due_Date,Direct_Debit_Date,Direct_Debit_Amount,Bpay_Biller_ID,Bpay_Biller_CRN,Notes } = req.body;
+    let { User_OID,Biller_OID,Bills_Name,Biller_Bill_ID,Bill_Amount,Bill_Due_Date, Bill_Issue_Date, Direct_Debit_Date,Direct_Debit_Amount,Bpay_Biller_ID,Bpay_Biller_CRN,Notes } = req.body;
 
     if ( User_OID=== undefined || User_OID === null || User_OID === "") return res.json({ status: false, msg: 'Please provide the User_OID.' });
     if ( Biller_OID=== undefined || Biller_OID === null || Biller_OID === "") return res.json({ status: false, msg: 'Please provide the Biller_OID.' });
-    if ( Biller_Bill_ID=== undefined || Biller_Bill_ID === null || Biller_Bill_ID === "") return res.json({ status: false, msg: 'Please provide the Biller_Bill_ID.' });
-    if ( Bills_Name=== undefined || Bills_Name === null || Bills_Name === "") return res.json({ status: false, msg: 'Please provide the Bills Name.' });
+    // if ( Biller_Bill_ID=== undefined || Biller_Bill_ID === null || Biller_Bill_ID === "") return res.json({ status: false, msg: 'Please provide the Biller_Bill_ID.' });
+    // if ( Bills_Name=== undefined || Bills_Name === null || Bills_Name === "") return res.json({ status: false, msg: 'Please provide the Bills Name.' });
     if ( Bill_Amount=== undefined || Bill_Amount === null || Bill_Amount === "") return res.json({ status: false, msg: 'Please provide the Bill_Amount.' });
     if ( Bill_Due_Date=== undefined || Bill_Due_Date === null || Bill_Due_Date === "") return res.json({ status: false, msg: 'Please provide the Bill_Due_Date.' });
-    if ( Bpay_Biller_ID=== undefined || Bpay_Biller_ID === null || Bpay_Biller_ID === "") return res.json({ status: false, msg: 'Please provide the Bpay_Biller_ID.' });
-    if ( Bpay_Biller_CRN=== undefined || Bpay_Biller_CRN === null || Bpay_Biller_CRN === "") return res.json({ status: false, msg: 'Please provide the Bpay_Biller_ID.' });
+    if ( Bill_Issue_Date=== undefined || Bill_Issue_Date === null || Bill_Issue_Date === "") return res.json({ status: false, msg: 'Please provide the Bill_Issue_Date.' });
+    // if ( Bpay_Biller_ID=== undefined || Bpay_Biller_ID === null || Bpay_Biller_ID === "") return res.json({ status: false, msg: 'Please provide the Bpay_Biller_ID.' });
+    // if ( Bpay_Biller_CRN=== undefined || Bpay_Biller_CRN === null || Bpay_Biller_CRN === "") return res.json({ status: false, msg: 'Please provide the Bpay_Biller_ID.' });
 
     
     let user1 = await NewBill.find({}).sort({_id:-1}).limit(1);
@@ -1582,20 +1611,21 @@ async function add_newbills(req,res,next) {
 
     console.log("gdxhssxfjgggfxfng")
   const newBill = new NewBill({
-      Bill_OID:data1,
-      User_OID:User_OID,
-      Biller_OID:Biller_OID,
-      Bills_Name:Bills_Name,
-      Biller_Bill_ID:Biller_Bill_ID,
-      Bill_Amount:Bill_Amount,
-      Bill_Due_Date:Bill_Due_Date,
-      Direct_Debit_Date:Direct_Debit_Date,
-      Direct_Debit_Amount:Direct_Debit_Amount,
-      Bpay_Biller_ID:Bpay_Biller_ID,
-      Bpay_Biller_CRN:Bpay_Biller_CRN,
-      Image:dataimage,
-      Notes:Notes,
-      createdAt: timestamp,
+				Bill_OID:data1,
+				User_OID:User_OID,
+				Biller_OID:Biller_OID,
+				Bills_Name:Bills_Name,
+				Biller_Bill_ID:Biller_Bill_ID,
+				Bill_Amount: Bill_Amount,
+				Bill_Due_Date:Bill_Due_Date,
+				Bill_Issue_Date: Bill_Issue_Date,
+				Direct_Debit_Date:Direct_Debit_Date,
+				Direct_Debit_Amount:Direct_Debit_Amount,
+				Bpay_Biller_ID:Bpay_Biller_ID,
+				Bpay_Biller_CRN:Bpay_Biller_CRN,
+				Image:dataimage,
+				Notes:Notes,
+				createdAt: timestamp,
 
     })
 
@@ -1691,18 +1721,28 @@ async function active_status(req,res,next) {
 
 async function updatebills(req,res,next) {
   try{
+    var ERRORS = ['', null, undefined];
+    let{Bill_OID} = req.params;
+     const data = req.body;
+    // if(errors.indexOf(myFile)==-1){
 
-    let{Bill_OID} =req.params
-    const uploadFile = await filesUpload(req, res, [{ name: 'image' }], config.userFilePath);
-    console.log(req.files.image)
-    const data = req.body;
-    data.image = uploadFile[0].imageName;
-    var dataimage = data.image
+
+    // }
+	const uploadFile = await filesUpload(req, res, [{ name: 'image' }], config.userFilePath);
+	console.log(req.files.image)
+	data.image = uploadFile[0].imageName;
+  var newPic =  uploadFile[0].imageName;
+	var dataimage = data.image
+
+  console.log('dataimage dataimagedataimagedataimagedataimagedataimage', dataimage);
+
   
 
-    let { User_OID,Biller_OID,Bills_Name,Biller_Bill_ID,Bill_Amount,Bill_Due_Date,Direct_Debit_Date,Direct_Debit_Amount,Bpay_Biller_ID,Bpay_Biller_CRN,Notes  } = req.body;
+    let { User_OID,Biller_OID,Bills_Name,Biller_Bill_ID,Bill_Amount,Bill_Due_Date, Bill_Issue_Date, Direct_Debit_Date,Direct_Debit_Amount,Bpay_Biller_ID,Bpay_Biller_CRN,Notes  } = req.body;
+        console.log(' Bill_AmountBill_AmountBill_AmountBill_Amount', Bill_Amount);
 
-    let billsdata = await NewBill.findOne({ Bill_OID:Bill_OID});//Finding the specific Data
+
+    let billsdata = await NewBill.findOne({ Bill_OID:Bill_OID}); //Finding the specific Data
     
 
     if (User_OID === undefined || User_OID === null ||User_OID === ""){
@@ -1750,21 +1790,25 @@ if (Biller_OID === undefined || Biller_OID === null ||Biller_OID === ""){
              else{
               var Bill_Due_Date1=Bill_Due_Date;
               }
-              
-     
-              if (Direct_Debit_Date === undefined || Direct_Debit_Date === null ||Direct_Debit_Date === ""){
-                var Direct_Debit_Date1=billsdata.Direct_Debit_Date;
-                }
-               else{
-                var Direct_Debit_Date1=Direct_Debit_Date;
-                }
+
+
+              // if (Direct_Debit_Date === undefined || Direct_Debit_Date === null ||Direct_Debit_Date === ""){
+              //   var Direct_Debit_Date1=billsdata.Direct_Debit_Date;
+              //   }
+              //  else{
+              //   var Direct_Debit_Date1=Direct_Debit_Date;
+              //   }
+
+                 var Direct_Debit_Date1=Direct_Debit_Date;
 
                 if (Direct_Debit_Amount === undefined || Direct_Debit_Amount === null ||Direct_Debit_Amount === ""){
-                  var Direct_Debit_Amount1=billsdata.Direct_Debit_Amount;
+                  var Direct_Debit_Amount1 = billsdata.Direct_Debit_Amount;
                   }
                  else{
                   var Direct_Debit_Amount1=Direct_Debit_Amount;
                   }
+
+                 
 
                   if (Bpay_Biller_ID === undefined || Bpay_Biller_ID === null ||Bpay_Biller_ID === ""){
                     var Bpay_Biller_ID1=billsdata.Bpay_Biller_ID;
@@ -1787,32 +1831,31 @@ if (Biller_OID === undefined || Biller_OID === null ||Biller_OID === ""){
                         var Notes1=Notes;
                         }
 
-                        if (req.body.image == undefined) {
-                          var image1 = billsdata.image;
-                        }
-                  
-                        else if (dataimage == "public/images/default/main.png") {
-                          var image1 = billsdata.image
+   
+
+                        var newData = {
+          								Bill_Amount:req.body.Bill_Amount,
+          								Bill_Due_Date:Bill_Due_Date1,
+          								Bill_Issue_Date:req.body.Bill_Issue_Date,
+          								Biller_OID:Biller_OID1,
+          								Direct_Debit_Date:Direct_Debit_Date1,
+          								Direct_Debit_Amount:Direct_Debit_Amount1,
+          								User_OID:User_OID1
+                         }
+
+                         console.log(newData);
+
+                     if (ERRORS.indexOf(newPic)>=0) {
+                           console.log('1');
                         }
                         else {
-                  
-                          var image1 =  dataimage;
+                            newData['Image'] = dataimage
+                     
+                           console.log('3');
                         }
-                      NewBill.updateMany({Bill_OID:Bill_OID}, {
-                        User_OID:User_OID1,
-                       Biller_OID:Biller_OID1,
-                        Bills_Name:Biller_Name1,
-                        Biller_Bill_ID:Biller_Bill_ID1,
-                        Bill_Amount:Bill_Amount1,
-                        Bill_Due_Date:Bill_Due_Date1,
-                        Direct_Debit_Date:Direct_Debit_Date1,
-                        Direct_Debit_Amount:Direct_Debit_Amount1,
-                        Bpay_Biller_ID:Bpay_Biller_ID,
-                        Bpay_Biller_CRN:Bpay_Biller_CRN1,
-                        Image:image1,
-                        Notes:Notes1
 
-                      }, function(err, affected, resp) {
+
+                      NewBill.updateMany({Bill_OID:Bill_OID}, newData , function(err, affected, resp) {
                        //console.log(resp);
                      })
 
@@ -1829,6 +1872,7 @@ if (Biller_OID === undefined || Biller_OID === null ||Biller_OID === ""){
 
   }
   catch (err) {
+  	console.log(err);
     return res.status(401).send({ status: false, msg: 'Something Went Wrong.Please Try Again!' })
   }
   
@@ -1980,33 +2024,46 @@ async function view_bills_list(req,res,next) {
         if(data.length>0){
         
         Customer.findOne({ user_OID: data[counter].User_OID }, (err, userinfo) => {
- 
-          dict = {
+
+           BordBiller.findOne({  Biller_OID: data[counter]. Biller_OID }, (err, userinfo1) => {
+
+            dict = {
             "_id": data[counter]._id,
             "Bill_Status": data[counter].Bill_Status,
             "Bill_OID": data[counter].Bill_OID,
             "User_OID": data[counter].User_OID,
             "Biller_OID": data[counter].Biller_OID,
-            "Bills_Name": data[counter].Bills_Name,
+            "Bills_Name": userinfo1.Biller_Name,
             "Biller_Bill_ID": data[counter].Biller_Bill_ID,
             "Bill_Amount": data[counter].Bill_Amount,
             "Bill_Due_Date": data[counter].Bill_Due_Date,
+            "Bill_Issue_Date": data[counter].Bill_Issue_Date,
             "Direct_Debit_Date": data[counter].Direct_Debit_Date,
             "Direct_Debit_Amount": data[counter].Direct_Debit_Amount,
             "Bpay_Biller_ID": data[counter].Bpay_Biller_ID,
-            "Bpay_Biller_CRN": data[counter].Bpay_Biller_CRN,
+            "Bpay_Biller_CRN": userinfo1.BBC,
             "Image": data[counter].Image,
             "createdAt": data[counter].createdAt,
             "Notes": data[counter].Notes,
-            "UserData": userinfo
+            "UserData": userinfo,
+            "user_OID": userinfo.user_OID
+
           };
           billsdata.push(dict);
           if(counter < data.length -1){
             counter = counter + 1;
             getBillsdata();
           }else{
-            return res.send({ status: true,msg: 'Bill Details .', data: billsdata })
+            return res.send({ status: true,msg: 'Bill Details .', data:  arraySort(billsdata,  ['Bill_OID'], {reverse: true})})
           }
+            
+
+
+
+
+           });
+ 
+
           
         });//
       }
@@ -2126,18 +2183,20 @@ async function view_bills_list(req,res,next) {
             "Bill_OID": data[counter].Bill_OID,
             "User_OID": data[counter].User_OID,
             "Biller_OID": data[counter].Biller_OID,
-            "Bills_Name": data[counter].Bills_Name,
+            "Bills_Name":  userinfo.Biller_Name,
             "Biller_Bill_ID": data[counter].Biller_Bill_ID,
             "Bill_Amount": data[counter].Bill_Amount,
             "Bill_Due_Date": data[counter].Bill_Due_Date,
+            "Bill_Issue_Date": data[counter].Bill_Issue_Date,
             "Direct_Debit_Date": data[counter].Direct_Debit_Date,
             "Direct_Debit_Amount": data[counter].Direct_Debit_Amount,
             "Bpay_Biller_ID": data[counter].Bpay_Biller_ID,
-            "Bpay_Biller_CRN": data[counter].Bpay_Biller_CRN,
+            "Bpay_Biller_CRN": userinfo.BBC,
             "Image": data[counter].Image,
             "createdAt": data[counter].createdAt,
             "Notes": data[counter].Notes,
-            "BillerData": userinfo
+            "BillerData": userinfo,
+
           };
           billsdata.push(dict);
           if(counter < data.length -1){
@@ -2284,6 +2343,85 @@ async function app_view_bills(req,res,next) {
   
  }
 
+
+ async function  sendmail1(email1, auth_key) {
+
+            var nodemailer = require('nodemailer')
+            var smtpTransport = require('nodemailer-smtp-transport');
+            const jwt = require('jsonwebtoken');
+            const config =require("config");
+            var emailDetails = require('../../config/sms');
+            const Customer = require("../../models/customer");
+            const jwtToken='OPAY';
+            const { email, password } = emailDetails
+            var mailAccountUser = email
+            var mailAccountPassword = password
+            var fromEmailAddress = email
+            var transport = nodemailer.createTransport(smtpTransport({
+            service: 'gmail',
+            auth: {
+                user: mailAccountUser,
+                pass: mailAccountPassword
+            }
+            }))
+          
+
+            let displayMessageHTML;
+
+            const credentials = {
+
+            email:email1,
+            time: (new Date()).getTime()
+            };
+
+            const token = jwt.sign(credentials, jwtToken, { algorithm: 'HS256' });
+
+            customer = Customer
+            customer.updateOne({auth_key: auth_key}, { verificationLink:token}, function(err, affected, resp) {
+            console.log(resp);
+            }),
+            displayMessageHTML =` 
+            <p>Hi <br>Please click the following button to verify your email address:</p>
+
+            <table border="0" cellspacing="0" cellpadding="0">
+            <tr>
+                <td align="center" style="border-radius: 3px;" bgcolor="#0000FF"><a href="${config.baseUrl1}:${config.port}/api/v1/Opay/mailverification/${token}" style="font-size: 16px; font-family: Helvetica, Arial, sans-serif; color: #ffffff; text-decoration: none; color: #ffffff; text-decoration: none; padding: 15px 24px; border-radius: 2px; border: 1px solid #FFA73B; display: inline-block;">Verify email</a></td>
+            </tr>
+            </table>
+            <br>
+            If the link doesn't work, just copy and paste the following URL into a web browser:<br>
+            <a href="${config.baseUrl1}:${config.port}/api/v1/Opay/mailverification/${token}">${config.baseUrl1}:${config.port}/api/v1/Opay/mailverification/${token}</a><br>
+            <br>
+            All good things<br>
+           `
+             
+            let email11 = {
+                from: fromEmailAddress,
+                to: email1,
+                subject: "Please verify your new email address",
+                text: "Doshy",
+                html: displayMessageHTML
+            }
+            try {
+            transport.sendMail(email11, function (error, response) {
+                    if (error) {
+                        console.log('The Error during mail sending', error)
+                        return false;
+                    } else {
+                        console.log('The Response during mail sending', response.response)
+                        console.log('The Response during mail sending', response)
+                        return true;
+                    }
+                });
+            }
+            catch (err) {
+                console.log('err is err', err)
+                return false;
+            }
+           
+ 
+   
+ }
 
 
 

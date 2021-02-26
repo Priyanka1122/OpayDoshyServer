@@ -11,7 +11,7 @@ const connection = require("./connection/connect");
 const route = require("./route");
 const universalFunction = require("./lib/universal-Function");
 const { statusCode } = require("./constant");
-
+var path = __dirname;
 const server = require("http").createServer(app);
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ limit: "50mb", extended: true }));
@@ -30,8 +30,8 @@ app.use((error, req, res, next) => {
 
 // for parsing multipart/form-data
 app.use(upload.array());
-app.use(express.static("public/images/"));
-
+// app.use(express.static("public/images/"));
+app.use(express.static('public'));
 //https://opaybackend.herokuapp.com/images/image-1607046449.jpg
 
 // server.listen(config.get("port"),async()=>{

@@ -28,6 +28,13 @@ const OnBordBiller = new mongoose.Schema({
         type:String,
         required:[false,`#Please provide the Biller Postal Address`]
     },
+    BBC:{
+        type:String,
+        required:[false,`#Please provide the BBC`]
+    },
+    notes:{
+        type:String,
+    },
 
     Biller_Contact_Person:{
         type:String,
@@ -56,7 +63,7 @@ const OnBordBiller = new mongoose.Schema({
         trim: true,
        // default: timestamp
     }
-})
+}, {timestamps: true})
 
 module.exports = mongoose.model('OnBordBiller', OnBordBiller);
 

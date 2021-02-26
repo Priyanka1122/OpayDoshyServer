@@ -45,6 +45,11 @@ const NewBill=new mongoose.Schema({
         required:[false,`#Please Provide the Bill Due Date`]
 
     },
+    Bill_Issue_Date:{
+        type:String,
+        required:[false,`#Please Provide the Bill Issue Date`]
+
+    },
 
     Direct_Debit_Date:{
         type:String,
@@ -108,18 +113,9 @@ const NewBill=new mongoose.Schema({
         trim: true,
         required:false
 
-    },
-createdAt: {
-        type: Number,
-        trim: true,
-       // default: timestamp
-    },
-    updatedAt: {
-        type: Number,
-        trim: true,
-       // default: timestamp
-    },
-})
+    }
+ 
+},  {timestamps: true})
 
 module.exports = mongoose.model('newbill', NewBill);
 

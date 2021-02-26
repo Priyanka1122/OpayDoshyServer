@@ -4,7 +4,7 @@
     "defaultImage": "",
     
     "defaultThumb": "",
-    "baseUrl1":"opaybackend.herokuapp.com",
+    "baseUrl1":"http://3.141.6.80",
     "secretkey":"OPAY@123",
     "mongoDbConnectionUrl": "mongodb+srv://Neeraj:neerajkumar@cluster0.0yeto.mongodb.net/Opay?retryWrites=true&w=majority",
     "mongoDbConnectionUrl1": "mongodb://localhost:27017/Opay"

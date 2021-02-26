@@ -16,20 +16,20 @@ first_name: {
         type: String,
         required: [false, `#Please provid the 'First Name' `],
         trim: true,
-        lowercase: true
+        
     },
     middle_name:{
         type: String,
         required: [false, `#Please provid the Middle Name`],
         trim: true,
-        lowercase: true
+         
 
     },
     last_name: {
         type: String,
         required: [false, `#Please provid the Last Name`],
         trim: true,
-        lowercase: true
+         
     },
     mobile: {
         type: String,
@@ -41,7 +41,7 @@ first_name: {
         type: String,
        // unique: true,
         required: [false, '#Please provide the email'],
-        lowercase: true,
+      
         validate(value) {
             //Validating the email
             if (!validator.isEmail(value)) {
@@ -67,8 +67,14 @@ first_name: {
     address:{
         type: String,
         required: [false, `#Please provid the Address`],
+        trim: true
+
+    },
+
+    notes:{
+        type: String,
         trim: true,
-        lowercase: true
+     
 
     },
 

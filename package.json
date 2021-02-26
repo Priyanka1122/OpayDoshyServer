@@ -13,6 +13,7 @@
   "author": "NEERAJ KUMAR",
   "license": "MIT",
   "dependencies": {
+    "array-sort": "^1.0.0",
     "aws-sdk": "^2.817.0",
     "bcryptjs": "^2.4.3",
     "config": "^3.3.2",
