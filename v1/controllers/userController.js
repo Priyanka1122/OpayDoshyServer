@@ -200,6 +200,8 @@ function sendOTP(){
   }
 
    async function VerifyOtp(req,res,next) {
+     console.log("check user exist: AUTH KEY");
+     console.log(req.headers.auth_key);
     try {
     const { auth_key } = req.headers;
     const { otp } = req.body;
