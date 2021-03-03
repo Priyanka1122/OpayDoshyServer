@@ -232,7 +232,24 @@ async function mybills_current(req, res, next) {
 			}
 		]);
 
-		return res.send({ status: true, msg: "My Current Bills.", data: currentbill });
+		const BillerData = await NewBill.aggregate([
+			{
+				$lookup: {
+					from: "onbordbillers",
+					localField: "Biller_OID",
+					foreignField: "Biller_OID",
+					as: "BillerData"
+				}
+			},
+			{
+				$match: {
+					User_OID: user.user_OID
+					//"Bill_Status":true
+				}
+			}
+		]);
+
+		return res.send({ status: true, msg: "My Current Bills.", data: currentbill , billerData:  BillerData});
 	} catch (error) {
 		console.log(error);
 		return res.status(500).json({ status: false, msg: "Something Went Wrong." });
