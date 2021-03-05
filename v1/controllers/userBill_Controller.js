@@ -303,8 +303,8 @@ async function mybills_settled(req, res, next) {
 			},
 			{
 				$match: {
-					User_OID: user.user_OID
-					"Bill_Status":true
+					User_OID: user.user_OID,
+					Bill_Status:true
 				}
 			}
 		]);
