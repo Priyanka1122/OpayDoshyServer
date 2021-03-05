@@ -309,7 +309,23 @@ async function mybills_settled(req, res, next) {
 			}
 		]);
 
-		return res.send({ status: true, msg: "My CURRENT Bills.", data: currentbill });
+		const BillerData = await NewBill.aggregate([
+			{
+				$lookup: {
+					from: "onbordbillers",
+					localField: "Biller_OID",
+					foreignField: "Biller_OID",
+					as: "BillerData"
+				}
+			},
+			{
+				$match: {
+					User_OID: user.user_OID
+				}
+			}
+		]);
+
+		return res.send({ status: true, msg: "My CURRENT Bills.", data: currentbill, billerData:  BillerData });
 	} catch (error) {
 		console.log(error);
 		return res.status(500).json({ status: false, msg: "Something Went Wrong." });
