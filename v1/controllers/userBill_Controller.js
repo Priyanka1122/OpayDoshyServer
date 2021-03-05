@@ -249,7 +249,7 @@ async function mybills_current(req, res, next) {
 			}
 		]);
 
-		return res.send({ status: true, msg: "My Current Bills.", data: currentbill , billerData:  BillerData});
+		return res.send({ status: true, msg: "My Current Bills.", data: currentbill, billerData:  BillerData});
 	} catch (error) {
 		console.log(error);
 		return res.status(500).json({ status: false, msg: "Something Went Wrong." });
@@ -275,24 +275,41 @@ async function mybills_settled(req, res, next) {
 
 		console.log(user.mobile);
 
+		// const currentbill = await NewBill.aggregate([
+		// 	{
+		// 		$lookup: {
+		// 			from: "onbordbillers",
+		// 			localField: "Biller_OID",
+		// 			foreignField: "Biller_OID",
+		// 			as: "BordBillerdata"
+		// 		}
+		// 	},
+		// 	{
+		// 		$match: {
+		// 			User_Mobile: user.mobile,
+		// 			Bill_Status: true
+		// 		}
+		// 	}
+		// ]);
+
 		const currentbill = await NewBill.aggregate([
 			{
 				$lookup: {
-					from: "onbordbillers",
-					localField: "Biller_OID",
-					foreignField: "Biller_OID",
+					from: "users",
+					localField: "user_OID",
+					foreignField: "User_OID",
 					as: "BordBillerdata"
 				}
 			},
 			{
 				$match: {
-					User_Mobile: user.mobile,
-					Bill_Status: true
+					User_OID: user.user_OID
+					"Bill_Status":true
 				}
 			}
 		]);
 
-		return res.send({ status: true, msg: "My Settled Bills.", data: currentbill });
+		return res.send({ status: true, msg: "My CURRENT Bills.", data: currentbill });
 	} catch (error) {
 		console.log(error);
 		return res.status(500).json({ status: false, msg: "Something Went Wrong." });
