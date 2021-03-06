@@ -350,7 +350,7 @@ async function pay_bill(req, res, next) {
 
 				NewBill.update({ 'Bill_OID': Bill_OID }, { $set: { 
 					'Bill_Status' : true ,
-				}}, {new: true}, function(err, fieldsdata) {
+				}}, {new: true}, function(err, data) {
 						res.status(200).json({
 							status: true,
 							msg: "Bill Paid Successfully!"
