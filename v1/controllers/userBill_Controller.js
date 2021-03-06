@@ -338,14 +338,16 @@ async function mybills_settled(req, res, next) {
 
 
 async function pay_bill(req, res, next) {
+	console.log(req.body.Bill_OID);
 	try {
-		let newBill = await NewBill.findOne({ auth_key: auth_key }); 
+		const { Bill_OID } = req.body;
+		let newBill = await NewBill.findOne({ Bill_OID: Bill_OID }); 
 
 		console.log("*****check status******")
 		console.log(newBill);
 		
 		if(newBill){
-				NewBill.updateOne({auth_key: auth_key}, {
+				NewBill.updateOne({Bill_OID: Bill_OID}, {
                     Bill_Status:true
                 }, function(err, affected, resp) {
 					console.log("After Update Query!!!!!")
