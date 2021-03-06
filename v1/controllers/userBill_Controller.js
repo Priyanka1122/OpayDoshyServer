@@ -347,14 +347,21 @@ async function pay_bill(req, res, next) {
 		console.log(newBill);
 		
 		if(newBill){
-				NewBill.updateOne({Bill_OID: Bill_OID}, {
-                    Bill_Status:true
-                }, function(err, affected, resp) {
-					console.log("After Update Query!!!!!")
-                   	console.log(resp);
-                })
-		}else{
 
+				NewBill.update({ 'Bill_OID': Bill_OID }, { $set: { 
+					'Bill_Status' : true ,
+				}}, {new: true}, function(err, fieldsdata) {
+						res.status(200).json({
+							status: true,
+							msg: "Bill Paid Successfully!"
+						})
+				})
+
+		}else{
+						res.status(200).json({
+							status: false,
+							msg: "No Bill Data Exist!"
+						})
 		}
 	}catch(error){
 		return res.status(500).json({ status: false, msg: "Something Went Wrong." });
