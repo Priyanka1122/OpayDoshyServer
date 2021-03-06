@@ -37,7 +37,7 @@ router.post("/addnew_biller",Controller.userBill_Controller.billerdata);
 router.post("/getbiller",Controller.userBill_Controller.getbiller);
 router.get("/mybills_current",Controller.userBill_Controller.mybills_current);
 router.get("/mybills_settled",Controller.userBill_Controller.mybills_settled);
-
+router.get("/pay_bill",Controller.userBill_Controller.pay_bill);
 
 ////mybills_settled
 

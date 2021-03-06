@@ -18,6 +18,8 @@ exports.billerdata = billerdata;
 exports.getbiller = getbiller;
 exports.mybills_current = mybills_current;
 exports.mybills_settled = mybills_settled;
+exports.pay_bill = pay_bill;
+
 
 async function newbilldata(req, res, next) {
 	try {
@@ -333,4 +335,27 @@ async function mybills_settled(req, res, next) {
 	}
 }
 
-//-----------------------------
+
+
+async function pay_bill(req, res, next) {
+	try {
+		let newBill = await NewBill.findOne({ auth_key: auth_key }); 
+
+		console.log("*****check status******")
+		console.log(newBill);
+		
+		if(newBill){
+				NewBill.updateOne({auth_key: auth_key}, {
+                    Bill_Status:true
+                }, function(err, affected, resp) {
+					console.log("After Update Query!!!!!")
+                   	console.log(resp);
+                })
+		}else{
+
+		}
+	}catch(error){
+		return res.status(500).json({ status: false, msg: "Something Went Wrong." });
+	}
+}
+

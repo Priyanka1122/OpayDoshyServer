@@ -1199,9 +1199,7 @@ async function notificationlist(req,res,next) {
     if (user === null || user === undefined || !user) return res.json({ status: false, msg: `User doesn't exist.`});
 
     let notificationdata=await Notificationlist.find({ auth_key: auth_key});
-    console.log("NOTIFICATION");
-    console.log(auth_key);
-    console.log(notificationdata);
+ 
 
     if(notificationdata){
       return res.send({ status: true,msg: 'Notification Data List.', data: notificationdata });
