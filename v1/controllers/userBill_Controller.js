@@ -227,7 +227,7 @@ async function mybills_current(req, res, next) {
 			{
 				$match: {
 					User_OID: user.user_OID
-					//"Bill_Status":true
+					"Bill_Status":false
 				}
 			}
 		]);
@@ -244,7 +244,7 @@ async function mybills_current(req, res, next) {
 			{
 				$match: {
 					User_OID: user.user_OID
-					//"Bill_Status":true
+					"Bill_Status":false
 				}
 			}
 		]);
