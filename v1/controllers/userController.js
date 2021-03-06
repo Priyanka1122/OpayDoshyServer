@@ -1203,7 +1203,7 @@ async function notificationlist(req,res,next) {
     console.log(auth_key);
     console.log(notificationdata);
 
-    if(!notificationdata){
+    if(notificationdata){
       return res.send({ status: true,msg: 'Notification Data List.', data: notificationdata });
     }
     else{
