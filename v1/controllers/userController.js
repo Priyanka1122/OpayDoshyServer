@@ -1233,11 +1233,13 @@ async function update_mobileDetails(req,res,next) {
   const { security_key,auth_key} = req.headers;
   const {  mobile } = req.body; 
 
-
+  console.log(mobile);
   Customer.updateMany({auth_key: auth_key}, {
     mobile:mobile,
     verified:true,
-  }, function(err, affected, resp) {
+  }, function(err, resp) {
+    console.log("DATATTTTTTTTAAAAAAA");
+    console.log(resp);
     res.status(200).send({data:resp});
   })
 
