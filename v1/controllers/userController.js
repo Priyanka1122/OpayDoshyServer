@@ -50,6 +50,8 @@ exports.notification_app_status=notification_app_status;
 exports.notification_sms_status=notification_sms_status;
 exports.myDetails=myDetails;
 exports.update_mobile=update_mobile;
+exports.update_mobileDetails=update_mobileDetails;
+
 exports.opaywork=opaywork;
 exports.Faqsdata=Faqsdata;
 exports.contactus=contactus;
@@ -1224,6 +1226,22 @@ async function notificationlist(req,res,next) {
   
 }
 
+
+
+async function update_mobileDetails(req,res,next) {
+
+  const { security_key,auth_key} = req.headers;
+  const {  mobile } = req.body; 
+
+
+  Customer.updateMany({auth_key: auth_key}, {
+    mobile:mobile,
+    verified:true,
+  }, function(err, affected, resp) {
+    res.status(200).send({data:resp});
+  })
+
+}
 
 //--
 
