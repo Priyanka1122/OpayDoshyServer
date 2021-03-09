@@ -293,7 +293,7 @@ catch (err) {
    var checkname1 = validator.isAlpha(last_name);
     if(!checkname1) return res.json({status:false,msg:'Invalid Last Name'});
 
-   if (address === undefined ||address === null || address === "") return res.json({ status: false, msg: 'Please provide the address.' });
+  //  if (address === undefined ||address === null || address === "") return res.json({ status: false, msg: 'Please provide the address.' });
    if (dob === undefined ||dob === null || dob === "") return res.json({ status: false, msg: 'Please provide the dob.' });
 
   // if (licenceState === undefined ||licenceState === null || licenceState === "") return res.json({ status: false, msg: 'Please provide the licenceState.' });
