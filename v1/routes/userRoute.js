@@ -17,6 +17,8 @@ router.post("/notification_sms_status",Controller.userController.notification_sm
 router.post("/myDetails",Controller.userController.myDetails);
 router.post("/update_mobile",Controller.userController.update_mobile);
 router.post("/update_mobileDetails",Controller.userController.update_mobileDetails);
+router.post("/update_existingEmail",Controller.userController.update_existingEmail);
+
 router.get("/opaywork",Controller.userController.opaywork);
 router.get("/faqs",Controller.userController.Faqsdata);
 router.get("/contactus",Controller.userController.contactus);
