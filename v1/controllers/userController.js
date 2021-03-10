@@ -1232,74 +1232,73 @@ async function update_mobileDetails(req,res,next) {
 
   const { security_key,auth_key} = req.headers;
   const {  mobile } = req.body; 
-
+  console.log("CHANGE PHONE NUMBER");
   console.log(mobile);
-  Customer.updateMany({auth_key: auth_key}, {
-    mobile:mobile,
-    verified:true,
-  }, function(err, resp) {
-    console.log("DATATTTTTTTTAAAAAAA");
-    console.log(resp);
-    res.status(200).send({data:resp});
+  Customer.update({auth_key: auth_key}, { $set: {     
+      mobile:mobile,
+      verified:true
+  }}, {new: true}, function(err, resp) {
+          console.log("CHECK MOBILE IF UPDATED");
+          console.log(resp); 
+          res.json({'status': true, 'data': resp});
   })
-
 }
 
-//--
+
 
 async function touch_status(req,res,next) {
-  try{
+      try{
 
-   const { security_key,auth_key} = req.headers;
-   const {  touch_status,pin } = req.body; 
-   if (security_key === undefined || security_key === null || security_key === "") return res.json({ status: false, msg: 'Please provide the security key.' })
-   if (security_key != "OPAY@123") { message = "Invalid security key";
-       res.status(403).json({'success': false,'code': 403,'msg': message, });
-      res.end();
-      return false;
-  }
-  if (auth_key === undefined || auth_key === null || auth_key === "") return res.json({ status: false, msg: 'Please provide the auth key.' });
-let user = await Customer.findOne({ auth_key: auth_key});//Finding the specific User
-  if (user === null || user === undefined || !user) return res.json({ status: false, msg: `User doesn't exist.`});
+      const { security_key,auth_key} = req.headers;
+      const {  touch_status,pin } = req.body; 
+      if (security_key === undefined || security_key === null || security_key === "") return res.json({ status: false, msg: 'Please provide the security key.' })
+      if (security_key != "OPAY@123") { message = "Invalid security key";
+          res.status(403).json({'success': false,'code': 403,'msg': message, });
+          res.end();
+          return false;
+      }
+      if (auth_key === undefined || auth_key === null || auth_key === "") return res.json({ status: false, msg: 'Please provide the auth key.' });
+    let user = await Customer.findOne({ auth_key: auth_key});//Finding the specific User
+      if (user === null || user === undefined || !user) return res.json({ status: false, msg: `User doesn't exist.`});
 
-  if (touch_status === undefined || touch_status === null || touch_status === "") return res.json({ status: false, msg: 'Please provide the touch app status.' });
+      if (touch_status === undefined || touch_status === null || touch_status === "") return res.json({ status: false, msg: 'Please provide the touch app status.' });
 
-  
-  if(touch_status ==="1"){
-    if (pin === undefined || pin === null || pin === "") return res.json({ status: false, msg: 'Please provide the pin.' });
-  
-    var userpin=user.pin.toString()
-   
-    if(userpin !==pin){
-      return res.json({ status: false, msg: 'Please provide the correct pin' });
-  
+      
+      if(touch_status ==="1"){
+        if (pin === undefined || pin === null || pin === "") return res.json({ status: false, msg: 'Please provide the pin.' });
+      
+        var userpin=user.pin.toString()
+      
+        if(userpin !==pin){
+          return res.json({ status: false, msg: 'Please provide the correct pin' });
+      
+        }
+      
+      }
+
+      
+      customer = Customer
+    customer.updateMany({auth_key: auth_key}, { touch_status:touch_status}, function(err, affected, resp) {
+    
+    })
+
+    if(touch_status ==="0"){
+    data1={
+      "touch_status":false
     }
-  
-  }
+    return res.send({status: true, msg: 'Touch Status Disable' , data: data1})
 
-  
-  customer = Customer
- customer.updateMany({auth_key: auth_key}, { touch_status:touch_status}, function(err, affected, resp) {
- 
-})
+    }
+    else{ 
+    data1={
+      "touch_status":true
+    }
+    return res.send({status: true, msg: 'Touch Status Enable' , data: data1})
+    }
 
-if(touch_status ==="0"){
-data1={
-   "touch_status":false
-}
-return res.send({status: true, msg: 'Touch Status Disable' , data: data1})
-
-}
-else{ 
- data1={
-   "touch_status":true
-}
-return res.send({status: true, msg: 'Touch Status Enable' , data: data1})
-}
-
-  } catch (err) {
-   return res.status(401).send({ status: false, msg: 'Something Went Wrong.Please Try Again!' })
- }
+      } catch (err) {
+      return res.status(401).send({ status: false, msg: 'Something Went Wrong.Please Try Again!' })
+    }
 
   
 }
