@@ -48,8 +48,6 @@ exports.notification_sms_status = notification_sms_status;
 exports.myDetails = myDetails;
 exports.update_mobile = update_mobile;
 exports.update_mobileDetails = update_mobileDetails;
-exports.update_existingEmail = update_existingEmail;
-
 
 exports.opaywork = opaywork;
 exports.Faqsdata = Faqsdata;
@@ -705,7 +703,7 @@ async function notification_sms_status(req, res, next) {
 			resp
 		) {});
 
-		if (notification_sms_status === "0") {
+		if (notification_sms_status === false) {
 			data1 = {
 				notification_sms_status: false
 			};
@@ -1193,28 +1191,6 @@ async function update_mobileDetails(req, res, next) {
 		{ new: true },
 		function(err, resp) {
 			console.log("CHECK MOBILE IF UPDATED");
-			console.log(resp);
-			res.json({ status: true, data: resp });
-		}
-	);
-}
-
-
-async function update_existingEmail(req, res, next) {
-	const { security_key, auth_key } = req.headers;
-	const { email } = req.body;
-	console.log("CHANGE EMAIL");
-	console.log(email);
-	Customer.update(
-		{ auth_key: auth_key },
-		{
-			$set: {
-				email: email
-			}
-		},
-		{ new: true },
-		function(err, resp) {
-			console.log("CHECK EMAIL IF UPDATED");
 			console.log(resp);
 			res.json({ status: true, data: resp });
 		}
