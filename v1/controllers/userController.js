@@ -659,16 +659,16 @@ async function notification_app_status(req, res, next) {
 			resp
 		) {});
 
-		if (notification_app_status === "0") {
+		if (notification_app_status === false) {
 			data1 = {
 				notification_app_status: false
 			};
-			return res.send({ status: true, msg: "Notification App Status Disable", data: data1 });
+			return res.send({ status: true, msg: "App Notifications are Disabled!", data: data1 });
 		} else {
 			data1 = {
 				notification_app_status: true
 			};
-			return res.send({ status: true, msg: "Notification App Status Enable", data: data1 });
+			return res.send({ status: true, msg: "App Notifications are Enabled!", data: data1 });
 		}
 	} catch (err) {
 		return res.status(401).send({ status: false, msg: "Something Went Wrong.Please Try Again!" });
@@ -707,12 +707,12 @@ async function notification_sms_status(req, res, next) {
 			data1 = {
 				notification_sms_status: false
 			};
-			return res.send({ status: true, msg: "Notification SMS Status Disable", data: data1 });
+			return res.send({ status: true, msg: "SMS Notifications are Disabled!", data: data1 });
 		} else {
 			data1 = {
 				notification_sms_status: true
 			};
-			return res.send({ status: true, msg: "Notification SMS Status Enable", data: data1 });
+			return res.send({ status: true, msg: "SMS Notifications are Enabled!", data: data1 });
 		}
 	} catch (err) {
 		return res.status(401).send({ status: false, msg: "Something Went Wrong.Please Try Again!" });
