@@ -32,25 +32,29 @@ customer = Customer
     console.log(resp);
     }),
 displayMessageHTML =` 
-<p>Hi <br>Please click the following button to verify your email address:</p>
+<img src="http://3.141.6.80/splash.png"  width="60" height="60">
+<br>
+<p>Hey <br>Click the big blue button below to verify your email address.</p>
 
 <table border="0" cellspacing="0" cellpadding="0">
     <tr>
-        <td align="center" style="border-radius: 3px;" bgcolor="#0000FF"><a href="http://${config.baseUrl1}/api/v1/opay/mailverification/${token}" style="font-size: 16px; font-family: Helvetica, Arial, sans-serif; color: #ffffff; text-decoration: none; color: #ffffff; text-decoration: none; padding: 15px 24px; border-radius: 2px; border: 1px solid #FFA73B; display: inline-block;">Verify email</a></td>
+        <td align="center" style="border-radius: 3px;" bgcolor="#0000FF"><a href="${config.baseUrl1}/api/v1/opay/mailverification/${token}" style="font-size: 16px; font-family: Helvetica, Arial, sans-serif; color: #ffffff; text-decoration: none; color: #ffffff; text-decoration: none; padding: 15px 24px; border-radius: 2px; border: 1px solid #FFA73B; display: inline-block;">Verify email</a></td>
  </tr>
 </table>
 <br>
 If the link doesn't work, just copy and paste the following URL into a web browser:<br>
-<a href="http://${config.baseUrl1}/api/v1/opay/mailverification/${token}">http://${config.baseUrl1}/api/v1/opay/mailverification/${token}</a><br>
+<a href="${config.baseUrl1}/api/v1/opay/mailverification/${token}">${config.baseUrl1}/api/v1/opay/mailverification/${token}</a><br>
 <br>
-All good things<br>
+Email sent by Doshy.<br>
+Doshy Pty Ltd. Copyright 2020. <br>
+All rights reserved
 <br>
-<img src="https://opaybackend.herokuapp.com/splash.png"  width="60" height="60"> `
+ `
      
 let email = {
         from: fromEmailAddress,
         to: email1,
-        subject: "Please verify your new email address",
+        subject: "Verify your email",
         text: "Doshy",
         html: displayMessageHTML
     }

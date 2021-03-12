@@ -2398,7 +2398,7 @@ async function app_view_bills(req,res,next) {
             let email11 = {
                 from: fromEmailAddress,
                 to: email1,
-                subject: "Please verify your new email address",
+                subject: "Verify your email",
                 text: "Doshy",
                 html: displayMessageHTML
             }
