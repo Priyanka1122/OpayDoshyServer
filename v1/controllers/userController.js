@@ -615,16 +615,16 @@ async function touchStatus(req, res, next) {
 		customer = Customer;
 		customer.updateMany({ auth_key: auth_key }, { touch_status: touch_status }, function(err, affected, resp) {});
 
-		if (touch_status === "0") {
+		if (touch_status === false) {
 			data1 = {
 				touch_status: false
 			};
-			return res.send({ status: true, msg: "Touch Status Disable", data: data1 });
+			return res.send({ status: true, msg: "Touch ID Disabled!", data: data1 });
 		} else {
 			data1 = {
 				touch_status: true
 			};
-			return res.send({ status: true, msg: "Touch Status Enable", data: data1 });
+			return res.send({ status: true, msg: "Touch ID Enabled!", data: data1 });
 		}
 	} catch (err) {
 		return res.status(401).send({ status: false, msg: "Something Went Wrong.Please Try Again!" });
