@@ -1269,13 +1269,16 @@ async function resetNumber(req, res, next) {
 	var user = await Customer.findOne({ mobile: mobile });
 	console.log(user);
 
-	if(user){
+	if(user == null || user == undefined || user == ''){
 
-		res.json({res:true,msg:"User already exists!"})
+		var user_details = await Customer.findOne({ mobile: old_number });
+		console.log(user_details);
+
+		res.json({msg:"User already exists!"})
 
 	}else{
 
-		res.json({res:false,msg:user});
+		res.json({msg:user});
 
 	}
 
