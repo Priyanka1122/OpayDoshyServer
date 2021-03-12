@@ -32,7 +32,7 @@ customer = Customer
     console.log(resp);
     }),
 displayMessageHTML =` 
-<img src="http://3.141.6.80/splash.png"  width="60" height="60">
+<img src="http://3.141.6.80/opay.png"  width="60" height="60">
 <br>
 <p>Hey <br>Click the big blue button below to verify your email address.</p>
 
