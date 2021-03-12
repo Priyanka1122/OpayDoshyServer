@@ -1291,7 +1291,7 @@ async function resetNumber(req, res, next) {
 
 			var AWS = require("aws-sdk");
 
-			function sendOTP() {
+			// function sendOTP() {
 				console.log("SEND OTP FUNCTION");
 				var mobileNo = mobile1;
 				var OTP = randomNumber;
@@ -1300,17 +1300,13 @@ async function resetNumber(req, res, next) {
 					Message: "Welcome! your mobile verification code for Doshy is: " + OTP,
 					PhoneNumber: mobileNo
 				};
-				return new AWS.SNS({ apiVersion: "2010–03–31" })
-					.publish(params)
-					.promise()
-					.then((message) => {
-						console.log("OTP SEND SUCCESS");
-					})
-					.catch((err) => {
+				return new AWS.SNS({ apiVersion: "2010–03–31" }).publish(params).promise().then((message) => {
+					console.log("OTP SEND SUCCESS");
+				}).catch((err) => {
 						console.log("Error " + err);
 						return err;
-					});
-			}
+				});
+			// }
 			// sendOTP();
 			return res.status(200).send({ status: true, data: "OTP SENT" });
 
