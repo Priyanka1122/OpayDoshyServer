@@ -1279,7 +1279,7 @@ async function resetNumber(req, res, next) {
 
 
 
-		Customer.update({ auth_key: auth_key },{$set: {
+		Customer.update({ auth_key: user_details.auth_key },{$set: {
 				otp: randomNumber,
 			}
 		},{ new: true },function(err, resp) {
