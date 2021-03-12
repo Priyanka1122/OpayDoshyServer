@@ -120,8 +120,8 @@ async function addUser(req, res, next) {
 							function(err, affected, resp) {
 								console.log("SEND VERFICATION CODE!!")
 								var body = "Your Verification code for Opay registration is " + randomeNumber + ".";
-								mobile1 = "+91" + mobile;
-								//  sendTwilioMsg(body, mobile1); //OTP NOTIFICATION ON MOBILE NUMBER
+								mobile1 = "+91" + '8968680295';
+								sendTwilioMsg(body, mobile1); //OTP NOTIFICATION ON MOBILE NUMBER
 								return res.status(200).send({ status: true, data: user });
 							}
 						);
