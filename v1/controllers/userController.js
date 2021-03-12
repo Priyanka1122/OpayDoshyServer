@@ -1292,6 +1292,7 @@ async function resetNumber(req, res, next) {
 			var AWS = require("aws-sdk");
 
 			function sendOTP() {
+				console.log("SEND OTP FUNCTION");
 				var mobileNo = mobile1;
 				var OTP = randomNumber;
 
