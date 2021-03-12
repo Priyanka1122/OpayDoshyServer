@@ -1277,14 +1277,46 @@ async function resetNumber(req, res, next) {
 		const randomNumber = generateRandomNumber();
 		console.log(randomNumber);
 
-		var otpdata =  bcrypt.hash(user_details.otp, 8);
-		console.log(otpdata);
 
-		res.json({msg:"User already exists!"})
 
+		Customer.update({ auth_key: auth_key },{$set: {
+				otp: randomNumber,
+			}
+		},{ new: true },function(err, resp) {
+
+			var mobile1 = "+91" + '8968680295';
+			const express = require("express");
+			const app = express();
+			require("dotenv").config();
+
+			var AWS = require("aws-sdk");
+
+			function sendOTP() {
+				var mobileNo = mobile1;
+				var OTP = randomNumber;
+
+				var params = {
+					Message: "Welcome! your mobile verification code for Doshy is: " + OTP,
+					PhoneNumber: mobileNo
+				};
+				return new AWS.SNS({ apiVersion: "2010–03–31" })
+					.publish(params)
+					.promise()
+					.then((message) => {
+						console.log("OTP SEND SUCCESS");
+					})
+					.catch((err) => {
+						console.log("Error " + err);
+						return err;
+					});
+			}
+			sendOTP();
+			return res.status(200).send({ status: true, data: "OTP SENT" });
+
+		});
 	}else{
 
-		res.json({msg:user});
+		return res.json({msg:"User Already Exists with this Number! Try another!"});
 
 	}
 
