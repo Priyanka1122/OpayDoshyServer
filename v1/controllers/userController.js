@@ -455,6 +455,7 @@ async function getProfile(req, res, next) {
 		}
 
 		const { auth_key } = req.headers;
+		console.log(auth_key);
 
 		if (auth_key === undefined || auth_key === null || auth_key === "")
 			return res.json({ status: false, msg: "Please provide the auth key." });
