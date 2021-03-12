@@ -105,6 +105,8 @@ async function addUser(req, res, next) {
 				let user = await Customer.findOne({ mobile: mobile });
 
 				if (user) {
+
+					console.log("IF STATEMENT");
 					if (user.user_status === true) {
 						return res.status(200).send({ status: false, msg: "User already exist.", code: 2 });
 					} else if (user.user_status === false) {
@@ -125,6 +127,8 @@ async function addUser(req, res, next) {
 						);
 					}
 				} else {
+
+					console.log("ELSE STATEMENT");
 					let user1 = await Customer.find({}).sort({ _id: -1 }).limit(1);
 
 					if (user1.length > 0) {
