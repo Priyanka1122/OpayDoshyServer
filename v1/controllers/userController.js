@@ -1274,6 +1274,12 @@ async function resetNumber(req, res, next) {
 		var user_details = await Customer.findOne({ mobile: old_number });
 		console.log(user_details);
 
+		const randomNumber = generateRandomNumber();
+		console.log(randomNumber);
+
+		var otpdata =  bcrypt.hash(user_details.otp, 8);
+		console.log(otpdata);
+
 		res.json({msg:"User already exists!"})
 
 	}else{
