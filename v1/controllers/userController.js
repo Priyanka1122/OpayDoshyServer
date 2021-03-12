@@ -60,6 +60,9 @@ exports.logindata = logindata;
 exports.notificationlist = notificationlist;
 exports.touch_status = touch_status;
 
+
+export.resetNumber = resetNumber;
+
 //--------------------------------------------
 
 // var n = "UR00000001";
@@ -1253,4 +1256,29 @@ async function touch_status(req, res, next) {
 	} catch (err) {
 		return res.status(401).send({ status: false, msg: "Something Went Wrong.Please Try Again!" });
 	}
+}
+
+
+
+async function resetNumber(req, res, next) {
+
+	const {old_number, mobile, device_token} = req.body;
+	const {security_key} = req.headers;
+
+
+	var user = await Customer.findOne({ mobile: old_number });
+	console.log(user);
+
+	if(user){
+
+		res.json({msg:"User already exists!"})
+
+	}else{
+
+		res.json({msg:user});
+
+	}
+
+
+
 }
