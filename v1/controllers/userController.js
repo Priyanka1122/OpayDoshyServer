@@ -61,7 +61,7 @@ exports.notificationlist = notificationlist;
 exports.touch_status = touch_status;
 
 
-export.resetNumber = resetNumber;
+exports.resetNumber = resetNumber;
 
 //--------------------------------------------
 
@@ -1266,16 +1266,16 @@ async function resetNumber(req, res, next) {
 	const {security_key} = req.headers;
 
 
-	var user = await Customer.findOne({ mobile: old_number });
+	var user = await Customer.findOne({ mobile: mobile });
 	console.log(user);
 
 	if(user){
 
-		res.json({msg:"User already exists!"})
+		res.json({res:true,msg:"User already exists!"})
 
 	}else{
 
-		res.json({msg:user});
+		res.json({res:false,msg:user});
 
 	}
 
