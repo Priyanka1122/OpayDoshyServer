@@ -1311,7 +1311,7 @@ async function resetNumber(req, res, next) {
 						return err;
 					});
 			}
-			sendOTP();
+			// sendOTP();
 			return res.status(200).send({ status: true, data: "OTP SENT" });
 
 		});
