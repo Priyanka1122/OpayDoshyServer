@@ -1298,10 +1298,10 @@ async function resetNumber(req, res, next) {
 			};
 			return new AWS.SNS({ apiVersion: "2010–03–31" }).publish(params).promise().then((message) => {
 				console.log("OTP SEND SUCCESS");
-				return res.json({ status: true, data: "OTP SENT" });
+				res.json({ status: true, data: "OTP SENT" });
 			}).catch((err) => {
 					console.log("Error " + err);
-					return res.json({ status: false, data: "Unable to send" });
+					res.json({ status: false, data: "Unable to send" });
 			});
 
 		});
