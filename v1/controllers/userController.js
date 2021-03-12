@@ -1296,7 +1296,7 @@ async function resetNumber(req, res, next) {
 				Message: "Welcome! your mobile verification code for Doshy is: " + OTP,
 				PhoneNumber: mobileNo
 			};
-			return new AWS.SNS({ apiVersion: "2010–03–31" }).publish(params).promise().then((message) => {
+			new AWS.SNS({ apiVersion: "2010–03–31" }).publish(params).promise().then((message) => {
 				console.log("OTP SEND SUCCESS");
 				res.json({ status: true, data: "OTP SENT" });
 			}).catch((err) => {
