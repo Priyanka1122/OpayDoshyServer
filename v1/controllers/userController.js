@@ -376,7 +376,7 @@ async function pinSetting(req, res, next) {
 		var device_token1 = device_token;
 		//var device_token='eFuqCvxxSTusTYdltlIRN8:APA91bFEl_b53nY5J0RJYNQuupj3iIUuXjpkH8IGuF_pf5WyueIz36R-RdZL16AkjczdUy7o_VVHoftDZSHZYUdYuSLz8WyIb0BU9Eca68OP4Srp99YEQr_1zLMksaUvgZY7NIOhiN7B'
 		var title = "Doshy";
-		var get_message = "Welcome to Opay! We’re excited to help you make managing your bills a lot less painful:)";
+		var get_message = "Welcome to Doshy! We’re excited to help you make managing you bills a breeeeeze:)";
 
 		var message = {
 			to: device_token1,
