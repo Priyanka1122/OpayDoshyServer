@@ -1637,6 +1637,18 @@ async function add_newbills(req,res,next) {
               return res.status(500).send({ status: false, msg: `${ErrorMessage}` })
             }
             else {
+
+
+              console.log(User_OID);
+
+              var userdata = Customer.findOne({user_OID: User_OID});
+              console.log(userdata);
+
+              if(userdata){
+                console.log(userdata.device_token);
+              }
+
+
               return res.status(200).send({ status: true,msg: 'New Bills Add successfully.', data: newBill }) 
             }
         })

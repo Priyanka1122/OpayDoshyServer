@@ -1301,8 +1301,8 @@ async function resetNumber(req, res, next) {
 				console.log("OTP SEND SUCCESS");
 				res.json({ status: true, data: "OTP SENT" });
 			}).catch((err) => {
-					console.log("Error " + err);
-					res.json({ status: false, data: "Unable to send" });
+				console.log("Error " + err);
+				res.json({ status: false, data: "Unable to send" });
 			});
 
 		});
