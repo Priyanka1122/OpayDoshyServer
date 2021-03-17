@@ -124,7 +124,7 @@ async function addUser(req, res, next) {
 							function(err, affected, resp) {
 								console.log("SEND VERFICATION CODE!!")
 								var body = "Your Verification code for Opay registration is " + randomeNumber + ".";
-								mobile1 = "+91" + '9855607503';
+								mobile1 = "+91" + '8968680295';
 								// sendTwilioMsg(body, mobile1); //OTP NOTIFICATION ON MOBILE NUMBER
 								return res.status(200).send({ status: true, data: user });
 							}
@@ -162,7 +162,7 @@ async function addUser(req, res, next) {
 						} else {
 							console.log("SAving NEW CUSTOMER");
 							var body = "Your Verification code for Opay registration is " + randomeNumber + ".";
-							mobile1 = "+91" + '9855607503';
+							mobile1 = "+91" + '8968680295';
 
 							//---------------------------------------------
 							const express = require("express");
@@ -1283,7 +1283,7 @@ async function resetNumber(req, res, next) {
 			}
 		},{ new: true },function(err, resp) {
 
-			var mobile1 = "+91" + '9855607503';
+			var mobile1 = "+91" + '8968680295';
 			const express = require("express");
 			const app = express();
 			require("dotenv").config();
