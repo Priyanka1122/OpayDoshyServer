@@ -85,8 +85,8 @@ cron.schedule('* * * * *', () => {
     const date = new Date();
     var month = date.getMonth();
     if(month.toString().length == 1){
-    console.log(date.getFullYear()+'-'+('0'+date.getMonth()+1)+'-'+date.getDate());
-    var curr_date = date.getFullYear()+'-'+('0'+date.getMonth()+1)+'-'+date.getDate();
+    console.log(date.getFullYear()+'-'+('0'+(date.getMonth()+1))+'-'+date.getDate());
+    var curr_date = date.getFullYear()+'-'+('0'+(date.getMonth()+1))+'-'+date.getDate();
     }else{
     console.log(date.getFullYear()+'-'+(date.getMonth()+1)+'-'+date.getDate());
     var curr_date = date.getFullYear()+'-'+(date.getMonth()+1)+'-'+date.getDate();
