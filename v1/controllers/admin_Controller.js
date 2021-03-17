@@ -127,11 +127,22 @@ cron.schedule('* * * * *', () => {
               console.log("two days ago date");
               console.log(d);
 
-              console.log("current date");
+              var month_check = d.getMonth();
+              if(month_check.toString().length == 1){
+              console.log(d.getFullYear()+'-'+('0'+(d.getMonth()+1))+'-'+d.getDate());
+              var curr_date_twodaysago = d.getFullYear()+'-'+('0'+(d.getMonth()+1))+'-'+d.getDate();
+              }else{
+              console.log(d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate());
+              var curr_date_twodaysago = d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate();
+              }
+
+              console.log("current date match both");
+              console.log(curr_date_twodaysago);
               console.log(curr_date);
+              console.log("current date match both");
 
 
-            if(d == curr_date){
+            if(curr_date_twodaysago == curr_date){
                 Customer.find({'user_OID':bill_list[counter].User_OID}, function(err, userdata) {
                   BordBiller.findOne({  Biller_OID: bill_list[counter].Biller_OID }, (err, billerinfo) => {
                     var title = "Payment Reminder";
@@ -172,11 +183,23 @@ cron.schedule('* * * * *', () => {
               console.log("two days ago date");
               console.log(d);
 
-              console.log("current date");
+
+              var month_check = d.getMonth();
+              if(month_check.toString().length == 1){
+              console.log(d.getFullYear()+'-'+('0'+(d.getMonth()+1))+'-'+d.getDate());
+              var curr_date_twodaysago = d.getFullYear()+'-'+('0'+(d.getMonth()+1))+'-'+d.getDate();
+              }else{
+              console.log(d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate());
+              var curr_date_twodaysago = d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate();
+              }
+
+              console.log("current date match both");
+              console.log(curr_date_twodaysago);
               console.log(curr_date);
+              console.log("current date match both");
 
 
-              if(d == curr_date){
+              if(curr_date_twodaysago == curr_date){
                 Customer.find({'user_OID':bill_list[counter].User_OID}, function(err, userdata) {
                   BordBiller.findOne({  Biller_OID: bill_list[counter].Biller_OID }, (err, billerinfo) => {
                     var title = "Payment Reminder";
