@@ -94,6 +94,9 @@ cron.schedule('* * * * *', () => {
         function checkDueDate(){
           console.log("Enter check due date");
           if(counter != bill_list.length-1){
+            console.log("CHECK IF DATES MATCH OR NOT!!")
+            console.log(bill_list[counter].Bill_Due_Date);
+            console.log(curr_date);
             if(bill_list[counter].Bill_Due_Date == curr_date){
               console.log("equal");
                 Customer.find({'user_OID':bill_list[counter].User_OID}, function(err, userdata) {
