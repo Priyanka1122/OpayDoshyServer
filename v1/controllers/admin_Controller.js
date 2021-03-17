@@ -1889,7 +1889,7 @@ async function add_newbills(req,res,next) {
                    
 
                   var title = "New Bill";
-                  var get_message = `You've received a new bill from ${billerinfo.Biller_Name} for ${'$'+Bill_Amount} due on ${Bill_Due_Date}. `
+                  var get_message = `You've received a new bill from ${billerinfo.Biller_Name} for ${'$'+Bill_Amount} due on ${moment(Bill_Due_Date, 'YYYY-MM-DD').format('D MMM YYYY')}. `
 
                   const notificationlist = new Notificationlist({ 
                     User_OID: User_OID,
