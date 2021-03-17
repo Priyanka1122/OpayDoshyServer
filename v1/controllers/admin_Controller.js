@@ -84,7 +84,7 @@ cron.schedule('* * * * *', () => {
     // '2021-03-27'
     console.log("Curr date");
     const date = new Date();
-    console.log(date.getDate()+' '+date.getMonth()+' '+date.getYear());
+    console.log(date.getFullYear()+'-'+(date.getMonth()+1)+'-'+date.getDate());
 
     // var newdate = date.split('T')[0] -2;
     // console.log(newdate);
