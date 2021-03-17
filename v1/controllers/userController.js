@@ -1341,23 +1341,47 @@ async function resetPin(req,res,Next){
 
 			var AWS = require("aws-sdk");
 
-			console.log("SEND OTP FUNCTION");
-			var mobileNo = mobile1;
-			var OTP = randomNumber;
+			// console.log("SEND OTP FUNCTION");
+			// var mobileNo = mobile1;
+			// var OTP = randomNumber;
 
-			var params = {
-				Message: "Welcome! your mobile verification code for Doshy is: " + OTP,
-				PhoneNumber: mobileNo
-			};
-			console.log(params);
-			return new AWS.SNS({ apiVersion: "2010–03–31" }).publish(params).promise().then((message) => {
-				console.log(message);
-				console.log("OTP SEND SUCCESS");
-				res.json({ status: true, data: "OTP SENT" });
-			}).catch((err) => {
-				console.log("Error " + err);
-				res.json({ status: false, data: "Unable to send" });
-			});
+			// var params = {
+			// 	Message: "Welcome! your mobile verification code for Doshy is: " + OTP,
+			// 	PhoneNumber: mobileNo
+			// };
+			// console.log(params);
+			// return new AWS.SNS({ apiVersion: "2010–03–31" }).publish(params).promise().then((message) => {
+			// 	console.log(message);
+			// 	console.log("OTP SEND SUCCESS");
+			// 	res.json({ status: true, data: "OTP SENT" });
+			// }).catch((err) => {
+			// 	console.log("Error " + err);
+			// 	res.json({ status: false, data: "Unable to send" });
+			// });
+
+			function sendOTP() {
+				var mobileNo = mobile1;
+				var OTP = randomNumber;
+
+				var params = {
+					Message: "Welcome! your mobile verification code for Doshy is: " + OTP,
+
+					PhoneNumber: mobileNo
+				};
+				return new AWS.SNS({ apiVersion: "2010–03–31" })
+					.publish(params)
+					.promise()
+					.then((message) => {
+						console.log(message);
+						console.log("OTP SEND SUCCESS");
+					})
+					.catch((err) => {
+						console.log("Error " + err);
+						return err;
+					});
+			}
+			sendOTP();
+			return res.status(200).send({ status: true, data: "OTP SENT SUCCESSFULLY!" });
 
 		});
 	}else{
