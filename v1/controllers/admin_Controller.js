@@ -91,16 +91,16 @@ cron.schedule('* * * * *', () => {
 
     var counter = 0;
     function checkDueDate(){
-      if(bills_list.length > 0){
-        if(bills_list[counter].Bill_Due_Date == curr_date){
+      if(bill_list.length > 0){
+        if(bill_list[counter].Bill_Due_Date == curr_date){
         
 
-        Customer.find({'user_OID':User_OID}, function(err, userdata) {
+        Customer.find({'user_OID':bill_list[counter].User_OID}, function(err, userdata) {
 
-          BordBiller.findOne({  Biller_OID: bills_list[counter].Biller_OID }, (err, billerinfo) => {
+          BordBiller.findOne({  Biller_OID: bill_list[counter].Biller_OID }, (err, billerinfo) => {
 
             var title = "Payment Reminder";
-            var get_message = `Just a reminder that your ${billerinfo.Biller_Name} bill for ${bills_list[counter].Bill_Due_Date} is due on ${bills_list[counter].Bill_Amount}. `
+            var get_message = `Just a reminder that your ${billerinfo.Biller_Name} bill for ${bill_list[counter].Bill_Due_Date} is due on ${bill_list[counter].Bill_Amount}. `
 
             const notificationlist = new Notificationlist({ 
               User_OID: User_OID,
