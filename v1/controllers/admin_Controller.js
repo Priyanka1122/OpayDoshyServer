@@ -126,6 +126,9 @@ cron.schedule('* * * * *', () => {
 
                   })
                 })
+            }else{
+                        counter += 1;
+                        checkDueDate();
             }
         }else if(counter == bill_list.length-1){
               if(bill_list[counter].Bill_Due_Date == curr_date){
