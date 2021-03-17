@@ -80,7 +80,15 @@ cron.schedule('* * * * *', () => {
   console.log('running a task every minute');
 
   NewBill.find({ 'Bill_Status': false }, (err, bill_list) => {
-    console.log(bill_list);
+    // console.log(bill_list);
+    console.log("Curr date");
+    var date = new Date();
+    console.log(date);
+
+    // var counter = 0;
+    // if(bills_list.length > 0){
+    //   bills_list[0].Bill_Due_Date
+    // }
   })
 
 
