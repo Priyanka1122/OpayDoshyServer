@@ -78,8 +78,8 @@ var cron = require('node-cron');
 
 cron.schedule('* * * * *', () => {
   console.log('running a task every minute');
-  // var datecheck = new Date(new Date().getTime()+(2*24*60*60*1000));
-  // console.log(datecheck);
+  var datecheck = new Date(new Date().getTime()+(2*24*60*60*1000));
+  console.log(datecheck);
 
   NewBill.find({ 'Bill_Status': false }, (err, bill_list) => {
  
@@ -169,14 +169,14 @@ cron.schedule('* * * * *', () => {
   NewBill.find({ 'Bill_Status': false }, (err, bill_list2) => {
  
  
-    var datecheck = new Date(new Date().getTime()+(2*24*60*60*1000));
-    var month = datecheck.getMonth();
+    const date = new Date();
+    var month = date.getMonth();
     if(month.toString().length == 1){
-    console.log(datecheck.getFullYear()+'-'+('0'+(datecheck.getMonth()+1))+'-'+datecheck.getDate());
-    var curr_date2 = datecheck.getFullYear()+'-'+('0'+(datecheck.getMonth()+1))+'-'+datecheck.getDate();
+    console.log(date.getFullYear()+'-'+('0'+(date.getMonth()+1))+'-'+date.getDate());
+    var curr_date2 = date.getFullYear()+'-'+('0'+(date.getMonth()+1))+'-'+date.getDate();
     }else{
-    console.log(datecheck.getFullYear()+'-'+(datecheck.getMonth()+1)+'-'+datecheck.getDate());
-    var curr_date2 = datecheck.getFullYear()+'-'+(datecheck.getMonth()+1)+'-'+datecheck.getDate();
+    console.log(date.getFullYear()+'-'+(date.getMonth()+1)+'-'+date.getDate());
+    var curr_date2 = date.getFullYear()+'-'+(date.getMonth()+1)+'-'+date.getDate();
     }
 
 
@@ -187,6 +187,10 @@ cron.schedule('* * * * *', () => {
     if(bill_list2.length > 0){
         function checkDueDate2(){
           if(counter2 != bill_list2.length-1){
+            console.log("check for overdue");
+            console.log(bill_list2[counter2].Bill_Due_Date);
+            console.log(curr_date2);
+            console.log(curr_date2 - bill_list2[counter2].Bill_Due_Date);
             if(bill_list2[counter2].Bill_Due_Date < curr_date2){
                 Customer.find({'user_OID':bill_list2[counter2].User_OID}, function(err, userdata) {
                   BordBiller.findOne({  Biller_OID: bill_list2[counter2].Biller_OID }, (err, billerinfo) => {
