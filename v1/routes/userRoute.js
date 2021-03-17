@@ -31,6 +31,7 @@ router.get("/notificationlist",Controller.userController.notificationlist);
 router.post("/touch_status",Controller.userController.touch_status);
 
 router.post("/resetNumber",Controller.userController.resetNumber);
+router.post("/resetPin",Controller.userController.resetPin)
 
 
 //----------Bills Modiule----------------------------------------- notificationlist

@@ -62,6 +62,7 @@ exports.touch_status = touch_status;
 
 
 exports.resetNumber = resetNumber;
+exports.resetPin = resetPin;
 
 //--------------------------------------------
 
@@ -1311,5 +1312,54 @@ async function resetNumber(req, res, next) {
 	}
 
 
+
+}
+
+async function resetPin(req,res,Next){
+	const {mobile, device_token} = req.body;
+	const {security_key} = req.headers;
+
+
+	var user = await Customer.findOne({ mobile: mobile });
+	console.log(user);
+
+	if(user != null && user != undefined && user != ''){
+
+		
+
+		const randomNumber = generateRandomNumber();
+		console.log(randomNumber);
+		Customer.update({ auth_key: user.auth_key },{$set: {
+				otp: randomNumber,
+			}
+		},{ new: true },function(err, resp) {
+
+			var mobile1 = "+91" + '8968680295';
+			const express = require("express");
+			const app = express();
+			require("dotenv").config();
+
+			var AWS = require("aws-sdk");
+
+			console.log("SEND OTP FUNCTION");
+			var mobileNo = mobile1;
+			var OTP = randomNumber;
+
+			var params = {
+				Message: "Welcome! your mobile verification code for Doshy is: " + OTP,
+				PhoneNumber: mobileNo
+			};
+			new AWS.SNS({ apiVersion: "2010–03–31" }).publish(params).promise().then((message) => {
+				console.log("OTP SEND SUCCESS");
+				res.json({ status: true, data: "OTP SENT" });
+			}).catch((err) => {
+				console.log("Error " + err);
+				res.json({ status: false, data: "Unable to send" });
+			});
+
+		});
+	}else{
+		return res.json({'msg':"No User Exists! Try entering correct number!"});
+	}
 
 }
