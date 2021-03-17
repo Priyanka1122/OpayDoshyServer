@@ -159,7 +159,7 @@ async function addUser(req, res, next) {
 						});
 
 
-						return res.status(200).send({ status: false, msg: "User already exist.", code: 2 });
+						// return res.status(200).send({ status: false, msg: "User already exist.", code: 2 });
 					} else if (user.user_status === false) {
 						var otpdata = await bcrypt.hash(user.otp, 8);
 						Customer.updateMany(
