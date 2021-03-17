@@ -1641,14 +1641,11 @@ async function add_newbills(req,res,next) {
               console.log("***********CHECK DATA********");
               console.log(User_OID);
 
-              var userdata = await Customer.findOne({'user_OID': User_OID});
-              console.log("GET ALL DATA");
-              console.log(userdata);
-
-              console.log(userdata.device_token);
-              
-
-
+              Customer.findOne({'user_OID':User_OID}, function(err, resp) {
+                console.log("GET ALL DATA");
+                console.log(resp.device_token);
+              })
+         
               return res.status(200).send({ status: true,msg: 'New Bills Add successfully.', data: newBill }) 
             }
         })
