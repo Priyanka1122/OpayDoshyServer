@@ -88,22 +88,22 @@ cron.schedule('* * * * *', () => {
 
 
   var datecheck = new Date(new Date().getTime()+(2*24*60*60*1000));
-  console.log(datecheck);
+  // console.log(datecheck);
 
 
 
   NewBill.find({ 'Bill_Status': false }, (err, bill_list) => {
 
-    console.log(bill_list);
+    // console.log(bill_list);
  
  
     const date = new Date();
     var month = date.getMonth();
     if(month.toString().length == 1){
-    console.log(date.getFullYear()+'-'+('0'+(date.getMonth()+1))+'-'+date.getDate());
+    // console.log(date.getFullYear()+'-'+('0'+(date.getMonth()+1))+'-'+date.getDate());
     var curr_date = date.getFullYear()+'-'+('0'+(date.getMonth()+1))+'-'+date.getDate();
     }else{
-    console.log(date.getFullYear()+'-'+(date.getMonth()+1)+'-'+date.getDate());
+    // console.log(date.getFullYear()+'-'+(date.getMonth()+1)+'-'+date.getDate());
     var curr_date = date.getFullYear()+'-'+(date.getMonth()+1)+'-'+date.getDate();
     }
 
@@ -129,10 +129,10 @@ cron.schedule('* * * * *', () => {
 
               var month_check = d.getMonth();
               if(month_check.toString().length == 1){
-              console.log(d.getFullYear()+'-'+('0'+(d.getMonth()+1))+'-'+d.getDate());
+              // console.log(d.getFullYear()+'-'+('0'+(d.getMonth()+1))+'-'+d.getDate());
               var curr_date_twodaysago = d.getFullYear()+'-'+('0'+(d.getMonth()+1))+'-'+d.getDate();
               }else{
-              console.log(d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate());
+              // console.log(d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate());
               var curr_date_twodaysago = d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate();
               }
 
@@ -180,16 +180,16 @@ cron.schedule('* * * * *', () => {
               var twodaysago = datee - 1000 * 60 * 60 * 24 * 2;
               
               var d = new Date(twodaysago);
-              console.log("two days ago date");
-              console.log(d);
+              // console.log("two days ago date");
+              // console.log(d);
 
 
               var month_check = d.getMonth();
               if(month_check.toString().length == 1){
-              console.log(d.getFullYear()+'-'+('0'+(d.getMonth()+1))+'-'+d.getDate());
+              // console.log(d.getFullYear()+'-'+('0'+(d.getMonth()+1))+'-'+d.getDate());
               var curr_date_twodaysago = d.getFullYear()+'-'+('0'+(d.getMonth()+1))+'-'+d.getDate();
               }else{
-              console.log(d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate());
+              // console.log(d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate());
               var curr_date_twodaysago = d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate();
               }
 
