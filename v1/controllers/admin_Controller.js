@@ -116,7 +116,7 @@ cron.schedule('* * * * *', () => {
                     var get_message = `Just a reminder that your ${billerinfo.Biller_Name} bill for ${bill_list[counter].Bill_Due_Date} is due on ${bill_list[counter].Bill_Amount}. `
 
                     const notificationlist = new Notificationlist({ 
-                      User_OID: User_OID,
+                      User_OID: bill_list[counter].User_OID,
                       auth_key: userdata[0].auth_key,
                       User_Name: userdata[0].first_name,
                       User_Image: "image-1607327075.jpg",
@@ -150,7 +150,7 @@ cron.schedule('* * * * *', () => {
                     var get_message = `Just a reminder that your ${billerinfo.Biller_Name} bill for ${bill_list[counter].Bill_Due_Date} is due on ${bill_list[counter].Bill_Amount}. `
 
                     const notificationlist = new Notificationlist({ 
-                      User_OID: User_OID,
+                      User_OID: bill_list[counter].User_OID,
                       auth_key: userdata[0].auth_key,
                       User_Name: userdata[0].first_name,
                       User_Image: "image-1607327075.jpg",
