@@ -77,182 +77,191 @@ exports.app_view_bills=app_view_bills;
 
 var cron = require('node-cron');
 
-cron.schedule('* * * * *', () => {
-  console.log('running a task every minute');
-  var datecheck = new Date(new Date().getTime()+(2*24*60*60*1000));
-  console.log(datecheck);
 
-  NewBill.find({ 'Bill_Status': false }, (err, bill_list) => {
+  ​var datee = new Date('2021-03-16');
+  console.log(datee);
+  var yesterday = datee - 1000 * 60 * 60 * 24 * 2;   // current date's milliseconds - 1,000 ms * 60 s * 60 mins * 24 hrs * (# of days beyond one to go back)
+  yesterday = new Date(yesterday);
+  console.log(yesterday);​
+
+// cron.schedule('* * * * *', () => {
+//   console.log('running a task every minute');
+//   var datecheck = new Date(new Date().getTime()+(2*24*60*60*1000));
+//   console.log(datecheck);
+
+
+
+//   NewBill.find({ 'Bill_Status': false }, (err, bill_list) => {
  
  
-    const date = new Date();
-    var month = date.getMonth();
-    if(month.toString().length == 1){
-    console.log(date.getFullYear()+'-'+('0'+(date.getMonth()+1))+'-'+date.getDate());
-    var curr_date = date.getFullYear()+'-'+('0'+(date.getMonth()+1))+'-'+date.getDate();
-    }else{
-    console.log(date.getFullYear()+'-'+(date.getMonth()+1)+'-'+date.getDate());
-    var curr_date = date.getFullYear()+'-'+(date.getMonth()+1)+'-'+date.getDate();
-    }
+//     const date = new Date();
+//     var month = date.getMonth();
+//     if(month.toString().length == 1){
+//     console.log(date.getFullYear()+'-'+('0'+(date.getMonth()+1))+'-'+date.getDate());
+//     var curr_date = date.getFullYear()+'-'+('0'+(date.getMonth()+1))+'-'+date.getDate();
+//     }else{
+//     console.log(date.getFullYear()+'-'+(date.getMonth()+1)+'-'+date.getDate());
+//     var curr_date = date.getFullYear()+'-'+(date.getMonth()+1)+'-'+date.getDate();
+//     }
 
 
 
 
-    var counter = 0;
+//     var counter = 0;
     
-      if(bill_list.length > 0){
-        function checkDueDate(){
-          if(counter != bill_list.length-1){
-            if(bill_list[counter].Bill_Due_Date == curr_date){
-                Customer.find({'user_OID':bill_list[counter].User_OID}, function(err, userdata) {
-                  BordBiller.findOne({  Biller_OID: bill_list[counter].Biller_OID }, (err, billerinfo) => {
-                    var title = "Payment Reminder";
-                    var get_message = `Just a reminder that your ${billerinfo.Biller_Name} bill for ${'$'+bill_list[counter].Bill_Amount} is due on ${moment(bill_list[counter].Bill_Due_Date, 'YYYY-MM-DD').format('D MMM YYYY')}. `
+//       if(bill_list.length > 0){
+//         function checkDueDate(){
+//           if(counter != bill_list.length-1){
+//             if(bill_list[counter].Bill_Due_Date == curr_date){
+//                 Customer.find({'user_OID':bill_list[counter].User_OID}, function(err, userdata) {
+//                   BordBiller.findOne({  Biller_OID: bill_list[counter].Biller_OID }, (err, billerinfo) => {
+//                     var title = "Payment Reminder";
+//                     var get_message = `Just a reminder that your ${billerinfo.Biller_Name} bill for ${'$'+bill_list[counter].Bill_Amount} is due on ${moment(bill_list[counter].Bill_Due_Date, 'YYYY-MM-DD').format('D MMM YYYY')}. `
 
-                    const notificationlist = new Notificationlist({ 
-                      User_OID: bill_list[counter].User_OID,
-                      auth_key: userdata[0].auth_key,
-                      User_Name: userdata[0].first_name,
-                      User_Image: "image-1607327075.jpg",
-                      title: title,
-                      Notification: get_message
-                    });
+//                     const notificationlist = new Notificationlist({ 
+//                       User_OID: bill_list[counter].User_OID,
+//                       auth_key: userdata[0].auth_key,
+//                       User_Name: userdata[0].first_name,
+//                       User_Image: "image-1607327075.jpg",
+//                       title: title,
+//                       Notification: get_message
+//                     });
 
-                    notificationlist.save((err) => {
-                      if (err) {
-                        console.log(err);
-                      } else {
-                        counter += 1;
-                        checkDueDate();
-                      }
-                    });
+//                     notificationlist.save((err) => {
+//                       if (err) {
+//                         console.log(err);
+//                       } else {
+//                         counter += 1;
+//                         checkDueDate();
+//                       }
+//                     });
 
-                  })
-                })
-            }else{
-                        counter += 1;
-                        checkDueDate();
-            }
-        }else if(counter == bill_list.length-1){
-              if(bill_list[counter].Bill_Due_Date == curr_date){
-                Customer.find({'user_OID':bill_list[counter].User_OID}, function(err, userdata) {
-                  BordBiller.findOne({  Biller_OID: bill_list[counter].Biller_OID }, (err, billerinfo) => {
-                    var title = "Payment Reminder";
-                    var get_message = `Just a reminder that your ${billerinfo.Biller_Name} bill for ${'$'+bill_list[counter].Bill_Amount} is due on ${moment(bill_list[counter].Bill_Due_Date, 'YYYY-MM-DD').format('D MMM YYYY')}. `
+//                   })
+//                 })
+//             }else{
+//                         counter += 1;
+//                         checkDueDate();
+//             }
+//         }else if(counter == bill_list.length-1){
+//               if(bill_list[counter].Bill_Due_Date == curr_date){
+//                 Customer.find({'user_OID':bill_list[counter].User_OID}, function(err, userdata) {
+//                   BordBiller.findOne({  Biller_OID: bill_list[counter].Biller_OID }, (err, billerinfo) => {
+//                     var title = "Payment Reminder";
+//                     var get_message = `Just a reminder that your ${billerinfo.Biller_Name} bill for ${'$'+bill_list[counter].Bill_Amount} is due on ${moment(bill_list[counter].Bill_Due_Date, 'YYYY-MM-DD').format('D MMM YYYY')}. `
 
-                    const notificationlist = new Notificationlist({ 
-                      User_OID: bill_list[counter].User_OID,
-                      auth_key: userdata[0].auth_key,
-                      User_Name: userdata[0].first_name,
-                      User_Image: "image-1607327075.jpg",
-                      title: title,
-                      Notification: get_message
-                    });
+//                     const notificationlist = new Notificationlist({ 
+//                       User_OID: bill_list[counter].User_OID,
+//                       auth_key: userdata[0].auth_key,
+//                       User_Name: userdata[0].first_name,
+//                       User_Image: "image-1607327075.jpg",
+//                       title: title,
+//                       Notification: get_message
+//                     });
 
-                    notificationlist.save((err) => {
-                      if (err) {
-                        console.log(err);
-                      } else {
-                        console.log("successfully");
-                      }
-                    });
-                  })
-                })
-            }
-        }
+//                     notificationlist.save((err) => {
+//                       if (err) {
+//                         console.log(err);
+//                       } else {
+//                         console.log("successfully");
+//                       }
+//                     });
+//                   })
+//                 })
+//             }
+//         }
 
-      }
-      checkDueDate();
-    }
-  })
-
-
-  NewBill.find({ 'Bill_Status': false }, (err, bill_list2) => {
+//       }
+//       checkDueDate();
+//     }
+//   })
 
 
-    var yesterdaydate = new Date(Date.now() - 864e5);
-
-    var month = yesterdaydate.getMonth();
-    if(month.toString().length == 1){
-    console.log(yesterdaydate.getFullYear()+'-'+('0'+(yesterdaydate.getMonth()+1))+'-'+yesterdaydate.getDate());
-    var yesterdaydatecheck = yesterdaydate.getFullYear()+'-'+('0'+(yesterdaydate.getMonth()+1))+'-'+yesterdaydate.getDate();
-    }else{
-    console.log(yesterdaydate.getFullYear()+'-'+(yesterdaydate.getMonth()+1)+'-'+yesterdaydate.getDate());
-    var yesterdaydatecheck = yesterdaydate.getFullYear()+'-'+(yesterdaydate.getMonth()+1)+'-'+yesterdaydate.getDate();
-    }
+//   NewBill.find({ 'Bill_Status': false }, (err, bill_list2) => {
 
 
+//     var yesterdaydate = new Date(Date.now() - 864e5);
+
+//     var month = yesterdaydate.getMonth();
+//     if(month.toString().length == 1){
+//     console.log(yesterdaydate.getFullYear()+'-'+('0'+(yesterdaydate.getMonth()+1))+'-'+yesterdaydate.getDate());
+//     var yesterdaydatecheck = yesterdaydate.getFullYear()+'-'+('0'+(yesterdaydate.getMonth()+1))+'-'+yesterdaydate.getDate();
+//     }else{
+//     console.log(yesterdaydate.getFullYear()+'-'+(yesterdaydate.getMonth()+1)+'-'+yesterdaydate.getDate());
+//     var yesterdaydatecheck = yesterdaydate.getFullYear()+'-'+(yesterdaydate.getMonth()+1)+'-'+yesterdaydate.getDate();
+//     }
 
 
-    var counter2 = 0;
+
+
+//     var counter2 = 0;
     
-    if(bill_list2.length > 0){
-        function checkDueDate2(){
-          if(counter2 != bill_list2.length-1){
-            console.log("check for overdue");
-            if(bill_list2[counter2].Bill_Due_Date == yesterdaydatecheck){
-                Customer.find({'user_OID':bill_list2[counter2].User_OID}, function(err, userdata) {
-                  BordBiller.findOne({  Biller_OID: bill_list2[counter2].Biller_OID }, (err, billerinfo) => {
-                    var title = "Payment overdue";
-                    var get_message = `Just a note that your ${billerinfo.Biller_Name} bill for ${'$'+bill_list2[counter2].Bill_Amount} is now overdue. `
+//     if(bill_list2.length > 0){
+//         function checkDueDate2(){
+//           if(counter2 != bill_list2.length-1){
+//             console.log("check for overdue");
+//             if(bill_list2[counter2].Bill_Due_Date == yesterdaydatecheck){
+//                 Customer.find({'user_OID':bill_list2[counter2].User_OID}, function(err, userdata) {
+//                   BordBiller.findOne({  Biller_OID: bill_list2[counter2].Biller_OID }, (err, billerinfo) => {
+//                     var title = "Payment overdue";
+//                     var get_message = `Just a note that your ${billerinfo.Biller_Name} bill for ${'$'+bill_list2[counter2].Bill_Amount} is now overdue. `
 
-                    const notificationlist = new Notificationlist({ 
-                      User_OID: bill_list2[counter2].User_OID,
-                      auth_key: userdata[0].auth_key,
-                      User_Name: userdata[0].first_name,
-                      User_Image: "image-1607327075.jpg",
-                      title: title,
-                      Notification: get_message
-                    });
+//                     const notificationlist = new Notificationlist({ 
+//                       User_OID: bill_list2[counter2].User_OID,
+//                       auth_key: userdata[0].auth_key,
+//                       User_Name: userdata[0].first_name,
+//                       User_Image: "image-1607327075.jpg",
+//                       title: title,
+//                       Notification: get_message
+//                     });
 
-                    notificationlist.save((err) => {
-                      if (err) {
-                        console.log(err);
-                      } else {
-                        counter2 += 1;
-                        checkDueDate2();
-                      }
-                    });
+//                     notificationlist.save((err) => {
+//                       if (err) {
+//                         console.log(err);
+//                       } else {
+//                         counter2 += 1;
+//                         checkDueDate2();
+//                       }
+//                     });
 
-                  })
-                })
-            }else{
-                        counter2 += 1;
-                        checkDueDate2();
-            }
-        }else if(counter2 == bill_list2.length-1){
-              if(bill_list2[counter2].Bill_Due_Date == yesterdaydatecheck){
-                Customer.find({'user_OID':bill_list2[counter2].User_OID}, function(err, userdata) {
-                  BordBiller.findOne({  Biller_OID: bill_list2[counter2].Biller_OID }, (err, billerinfo) => {
-                    var title = "Payment overdue";
-                    var get_message = `Just a note that your ${billerinfo.Biller_Name} bill for ${'$'+bill_list2[counter2].Bill_Amount} is now overdue. `
+//                   })
+//                 })
+//             }else{
+//                         counter2 += 1;
+//                         checkDueDate2();
+//             }
+//         }else if(counter2 == bill_list2.length-1){
+//               if(bill_list2[counter2].Bill_Due_Date == yesterdaydatecheck){
+//                 Customer.find({'user_OID':bill_list2[counter2].User_OID}, function(err, userdata) {
+//                   BordBiller.findOne({  Biller_OID: bill_list2[counter2].Biller_OID }, (err, billerinfo) => {
+//                     var title = "Payment overdue";
+//                     var get_message = `Just a note that your ${billerinfo.Biller_Name} bill for ${'$'+bill_list2[counter2].Bill_Amount} is now overdue. `
 
-                    const notificationlist = new Notificationlist({ 
-                      User_OID: bill_list2[counter2].User_OID,
-                      auth_key: userdata[0].auth_key,
-                      User_Name: userdata[0].first_name,
-                      User_Image: "image-1607327075.jpg",
-                      title: title,
-                      Notification: get_message
-                    });
+//                     const notificationlist = new Notificationlist({ 
+//                       User_OID: bill_list2[counter2].User_OID,
+//                       auth_key: userdata[0].auth_key,
+//                       User_Name: userdata[0].first_name,
+//                       User_Image: "image-1607327075.jpg",
+//                       title: title,
+//                       Notification: get_message
+//                     });
 
-                    notificationlist.save((err) => {
-                      if (err) {
-                        console.log(err);
-                      } else {
-                        console.log("successfully");
-                      }
-                    });
-                  })
-                })
-            }
-        }
+//                     notificationlist.save((err) => {
+//                       if (err) {
+//                         console.log(err);
+//                       } else {
+//                         console.log("successfully");
+//                       }
+//                     });
+//                   })
+//                 })
+//             }
+//         }
 
-      }
-      checkDueDate2();
-    }
-  })
-});
+//       }
+//       checkDueDate2();
+//     }
+//   })
+// });
 
 
 async function adminlogin(req,res,next) {
