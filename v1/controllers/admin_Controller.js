@@ -113,7 +113,7 @@ cron.schedule('* * * * *', () => {
                     console.log("check biller data");
                     console.log(billerinfo);
                     var title = "Payment Reminder";
-                    var get_message = `Just a reminder that your ${billerinfo.Biller_Name} bill for ${bill_list[counter].Bill_Due_Date} is due on ${bill_list[counter].Bill_Amount}. `
+                    var get_message = `Just a reminder that your ${billerinfo.Biller_Name} bill for ${'$'+bill_list[counter].Bill_Amount} is due on ${bill_list[counter].Bill_Due_Date}. `
 
                     const notificationlist = new Notificationlist({ 
                       User_OID: bill_list[counter].User_OID,
@@ -147,7 +147,7 @@ cron.schedule('* * * * *', () => {
                 Customer.find({'user_OID':bill_list[counter].User_OID}, function(err, userdata) {
                   BordBiller.findOne({  Biller_OID: bill_list[counter].Biller_OID }, (err, billerinfo) => {
                     var title = "Payment Reminder";
-                    var get_message = `Just a reminder that your ${billerinfo.Biller_Name} bill for ${bill_list[counter].Bill_Due_Date} is due on ${bill_list[counter].Bill_Amount}. `
+                    var get_message = `Just a reminder that your ${billerinfo.Biller_Name} bill for ${'$'+bill_list[counter].Bill_Amount} is due on ${bill_list[counter].Bill_Due_Date}. `
 
                     const notificationlist = new Notificationlist({ 
                       User_OID: bill_list[counter].User_OID,
@@ -1750,7 +1750,7 @@ async function add_newbills(req,res,next) {
                    
 
                   var title = "New Bill";
-                  var get_message = `You've received a new bill from ${billerinfo.Biller_Name} for ${Bill_Amount} due on ${Bill_Due_Date}. `
+                  var get_message = `You've received a new bill from ${billerinfo.Biller_Name} for ${'$'+Bill_Amount} due on ${Bill_Due_Date}. `
 
                   const notificationlist = new Notificationlist({ 
                     User_OID: User_OID,
