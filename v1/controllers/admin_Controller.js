@@ -1630,25 +1630,26 @@ async function add_newbills(req,res,next) {
     })
 
    
-    newBill.save((err) => {
-      if (err) {
-              console.log(err);
-              const ErrorMessage = substringFunction(err.toString(), '#', 'b') 
-              return res.status(500).send({ status: false, msg: `${ErrorMessage}` })
-            }
-            else {
+    // newBill.save((err) => {
+      // if (err) {
+      //         console.log(err);
+      //         const ErrorMessage = substringFunction(err.toString(), '#', 'b') 
+      //         return res.status(500).send({ status: false, msg: `${ErrorMessage}` })
+      //       }
+      //       else {
 
               console.log("***********CHECK DATA********");
               console.log(User_OID);
 
-              Customer.find({'user_OID':User_OID}, function(err, resp) {
+              Customer.find({'user_OID':User_OID}, function(err, userdata) {
                 console.log("GET ALL DATA");
-                console.log(resp.device_token);
+                console.log(userdata);
+                console.log(userdata.device_token);
               })
          
-              return res.status(200).send({ status: true,msg: 'New Bills Add successfully.', data: newBill }) 
-            }
-        })
+            //   return res.status(200).send({ status: true,msg: 'New Bills Add successfully.', data: newBill }) 
+            // }
+        // })
   }
   catch (err) {
     return res.status(401).send({ status: false, msg: 'Something Went Wrong.Please Try Again!' })
