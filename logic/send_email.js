@@ -42,8 +42,7 @@ displayMessageHTML =`
  </tr>
 </table>
 <br>
-If the link doesn't work, just copy and paste the following URL into a web browser:<br>
-<a href="${config.baseUrl1}/api/v1/opay/mailverification/${token}">${config.baseUrl1}/api/v1/opay/mailverification/${token}</a><br>
+<br>
 <br>
 Email sent by Doshy.<br>
 Doshy Pty Ltd. Copyright 2020. <br>
