@@ -87,8 +87,6 @@ cron.schedule('* * * * *', () => {
   console.log(datee);
   var yesterday = datee - 1000 * 60 * 60 * 24 * 2; 
   console.log(yesterday);  // current date's milliseconds - 1,000 ms * 60 s * 60 mins * 24 hrs * (# of days beyond one to go back)
-  var new_yesterday = new Date(yesterday);
-  console.log(new_yesterday);​
 
 
 
