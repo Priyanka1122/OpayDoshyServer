@@ -1573,12 +1573,8 @@ async function  get_terms_condition(req,res,next) {
 
 async function add_newbills(req,res,next) {
 
-  console.log("add_newbills");
 
   try{
-
-
-   
     
     const uploadFile = await filesUpload(req, res, [{ name: 'image' }], config.userFilePath);
     console.log(req.files.image)
@@ -1610,46 +1606,65 @@ async function add_newbills(req,res,next) {
     }
 
     console.log("gdxhssxfjgggfxfng")
-  const newBill = new NewBill({
-				Bill_OID:data1,
-				User_OID:User_OID,
-				Biller_OID:Biller_OID,
-				Bills_Name:Bills_Name,
-				Biller_Bill_ID:Biller_Bill_ID,
-				Bill_Amount: Bill_Amount,
-				Bill_Due_Date:Bill_Due_Date,
-				Bill_Issue_Date: Bill_Issue_Date,
-				Direct_Debit_Date:Direct_Debit_Date,
-				Direct_Debit_Amount:Direct_Debit_Amount,
-				Bpay_Biller_ID:Bpay_Biller_ID,
-				Bpay_Biller_CRN:Bpay_Biller_CRN,
-				Image:dataimage,
-				Notes:Notes,
-				createdAt: timestamp,
+    const newBill = new NewBill({
+          Bill_OID:data1,
+          User_OID:User_OID,
+          Biller_OID:Biller_OID,
+          Bills_Name:Bills_Name,
+          Biller_Bill_ID:Biller_Bill_ID,
+          Bill_Amount: Bill_Amount,
+          Bill_Due_Date:Bill_Due_Date,
+          Bill_Issue_Date: Bill_Issue_Date,
+          Direct_Debit_Date:Direct_Debit_Date,
+          Direct_Debit_Amount:Direct_Debit_Amount,
+          Bpay_Biller_ID:Bpay_Biller_ID,
+          Bpay_Biller_CRN:Bpay_Biller_CRN,
+          Image:dataimage,
+          Notes:Notes,
+          createdAt: timestamp,
 
-    })
+      })
 
    
-    // newBill.save((err) => {
-      // if (err) {
-      //         console.log(err);
-      //         const ErrorMessage = substringFunction(err.toString(), '#', 'b') 
-      //         return res.status(500).send({ status: false, msg: `${ErrorMessage}` })
-      //       }
-      //       else {
+    newBill.save((err) => {
+      if (err) {
+              console.log(err);
+              const ErrorMessage = substringFunction(err.toString(), '#', 'b') 
+              return res.status(500).send({ status: false, msg: `${ErrorMessage}` })
+            }
+            else {
 
               console.log("***********CHECK DATA********");
               console.log(User_OID);
 
               Customer.find({'user_OID':User_OID}, function(err, userdata) {
-                console.log("GET ALL DATA");
-                console.log(userdata);
-                console.log(userdata.device_token);
-              })
-         
-            //   return res.status(200).send({ status: true,msg: 'New Bills Add successfully.', data: newBill }) 
-            // }
-        // })
+                   
+
+                var title = "New Bill";
+                var get_message = `You've received a new bill from ${Bills_Name} for ${Bill_Amount} due on ${Bill_Due_Date}. `
+
+                const notificationlist = new Notificationlist({ 
+                  User_OID: User_OID,
+                  auth_key: userdata[0].auth_key,
+                  User_Name: userdata[0].first_name,
+                  User_Image: "image-1607327075.jpg",
+                  title: title,
+                  Notification: get_message
+                });
+
+                notificationlist.save((err) => {
+                  if (err) {
+                    console.log(err);
+                  } else {
+                    console.log("successfully");
+                  }
+                });
+          
+                return res.status(200).send({ status: true,msg: 'New Bills Add successfully.', data: newBill }) 
+
+               })
+            }
+        })
   }
   catch (err) {
     return res.status(401).send({ status: false, msg: 'Something Went Wrong.Please Try Again!' })
