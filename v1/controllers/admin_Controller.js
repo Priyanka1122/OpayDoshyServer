@@ -99,19 +99,10 @@ cron.schedule('* * * * *', () => {
     
       if(bill_list.length > 0){
         function checkDueDate(){
-          console.log("Enter check due date");
           if(counter != bill_list.length-1){
-            console.log("CHECK IF DATES MATCH OR NOT!!")
-            console.log(bill_list[counter].Bill_Due_Date);
-            console.log(curr_date);
             if(bill_list[counter].Bill_Due_Date == curr_date){
-              console.log("equal");
                 Customer.find({'user_OID':bill_list[counter].User_OID}, function(err, userdata) {
-                  console.log("check user data");
-                  console.log(userdata);
                   BordBiller.findOne({  Biller_OID: bill_list[counter].Biller_OID }, (err, billerinfo) => {
-                    console.log("check biller data");
-                    console.log(billerinfo);
                     var title = "Payment Reminder";
                     var get_message = `Just a reminder that your ${billerinfo.Biller_Name} bill for ${'$'+bill_list[counter].Bill_Amount} is due on ${bill_list[counter].Bill_Due_Date}. `
 
@@ -128,7 +119,6 @@ cron.schedule('* * * * *', () => {
                       if (err) {
                         console.log(err);
                       } else {
-                        console.log("successfully");
                         counter += 1;
                         checkDueDate();
                       }
@@ -142,8 +132,6 @@ cron.schedule('* * * * *', () => {
             }
         }else if(counter == bill_list.length-1){
               if(bill_list[counter].Bill_Due_Date == curr_date){
-                console.log(counter);
-                console.log("enter");
                 Customer.find({'user_OID':bill_list[counter].User_OID}, function(err, userdata) {
                   BordBiller.findOne({  Biller_OID: bill_list[counter].Biller_OID }, (err, billerinfo) => {
                     var title = "Payment Reminder";
@@ -1563,7 +1551,7 @@ async function notificationdata(req,res,next) {
         data1=[]
         return res.send({ status: true,msg: 'Data not found', data:data1})
       }
-    })
+    }).sort({ createdAt: -1 })
 
   
 
@@ -1744,9 +1732,6 @@ async function add_newbills(req,res,next) {
 
                 BordBiller.findOne({  Biller_OID: Biller_OID }, (err, billerinfo) => {
 
-                  console.log("BILLERINFO");
-                  console.log("***********CHECK DATA********");
-                  console.log(billerinfo);
                    
 
                   var title = "New Bill";
