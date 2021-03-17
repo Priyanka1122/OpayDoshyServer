@@ -76,7 +76,7 @@ exports.app_view_bills=app_view_bills;
 
 var cron = require('node-cron');
 
-cron.schedule('0 1 * * *', () => {
+cron.schedule('* * * * *', () => {
     const date = new Date();
     console.log(date.addDays(2));
   console.log('running a task every minute');
