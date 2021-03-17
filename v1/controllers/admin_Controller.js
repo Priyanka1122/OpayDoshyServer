@@ -78,6 +78,11 @@ var cron = require('node-cron');
 
 cron.schedule('* * * * *', () => {
   console.log('running a task every minute');
+
+  const bills_list =  NewBill.find({Bill_Status: false});
+  console.log(bills_list);
+
+
 });
 
 
