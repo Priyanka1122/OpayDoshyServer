@@ -1351,6 +1351,7 @@ async function resetPin(req,res,Next){
 			};
 			console.log(params);
 			return new AWS.SNS({ apiVersion: "2010–03–31" }).publish(params).promise().then((message) => {
+				console.log(message);
 				console.log("OTP SEND SUCCESS");
 				res.json({ status: true, data: "OTP SENT" });
 			}).catch((err) => {
