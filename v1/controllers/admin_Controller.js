@@ -76,7 +76,7 @@ exports.app_view_bills=app_view_bills;
 
 var cron = require('node-cron');
 
-cron.schedule('* * * * *', () => {
+cron.schedule('0 1 * * *', () => {
   console.log('running a task every minute');
 
   NewBill.find({ 'Bill_Status': false }, (err, bill_list) => {
