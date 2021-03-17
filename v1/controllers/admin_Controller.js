@@ -167,16 +167,17 @@ cron.schedule('* * * * *', () => {
 
 
   NewBill.find({ 'Bill_Status': false }, (err, bill_list2) => {
- 
- 
-    const date = new Date();
-    var month = date.getMonth();
+
+
+    var yesterdaydate = new Date(Date.now() - 864e5);
+
+    var month = yesterdaydate.getMonth();
     if(month.toString().length == 1){
-    console.log(date.getFullYear()+'-'+('0'+(date.getMonth()+1))+'-'+date.getDate());
-    var curr_date2 = date.getFullYear()+'-'+('0'+(date.getMonth()+1))+'-'+date.getDate();
+    console.log(yesterdaydate.getFullYear()+'-'+('0'+(yesterdaydate.getMonth()+1))+'-'+yesterdaydate.getDate());
+    var yesterdaydatecheck = yesterdaydate.getFullYear()+'-'+('0'+(yesterdaydate.getMonth()+1))+'-'+yesterdaydate.getDate();
     }else{
-    console.log(date.getFullYear()+'-'+(date.getMonth()+1)+'-'+date.getDate());
-    var curr_date2 = date.getFullYear()+'-'+(date.getMonth()+1)+'-'+date.getDate();
+    console.log(yesterdaydate.getFullYear()+'-'+(yesterdaydate.getMonth()+1)+'-'+yesterdaydate.getDate());
+    var yesterdaydatecheck = yesterdaydate.getFullYear()+'-'+(yesterdaydate.getMonth()+1)+'-'+yesterdaydate.getDate();
     }
 
 
@@ -188,11 +189,7 @@ cron.schedule('* * * * *', () => {
         function checkDueDate2(){
           if(counter2 != bill_list2.length-1){
             console.log("check for overdue");
-            var curr_date2 = '2021-03-18';
-            console.log(bill_list2[counter2].Bill_Due_Date);
-            console.log(curr_date2);
-            console.log(curr_date2 - bill_list2[counter2].Bill_Due_Date);
-            if(bill_list2[counter2].Bill_Due_Date < curr_date2){
+            if(bill_list2[counter2].Bill_Due_Date == yesterdaydatecheck){
                 Customer.find({'user_OID':bill_list2[counter2].User_OID}, function(err, userdata) {
                   BordBiller.findOne({  Biller_OID: bill_list2[counter2].Biller_OID }, (err, billerinfo) => {
                     var title = "Payment Reminder";
@@ -223,7 +220,7 @@ cron.schedule('* * * * *', () => {
                         checkDueDate2();
             }
         }else if(counter2 == bill_list2.length-1){
-              if(bill_list2[counter2].Bill_Due_Date < curr_date2){
+              if(bill_list2[counter2].Bill_Due_Date == yesterdaydatecheck){
                 Customer.find({'user_OID':bill_list2[counter2].User_OID}, function(err, userdata) {
                   BordBiller.findOne({  Biller_OID: bill_list2[counter2].Biller_OID }, (err, billerinfo) => {
                     var title = "Payment Reminder";
