@@ -123,7 +123,7 @@ async function addUser(req, res, next) {
 							}
 						},{ new: true },function(err, resp) {
 				
-							var mobile1 = "+91" + '8968680295';
+							var mobile1 = "+04" + user.mobile;
 							const express = require("express");
 							const app = express();
 							require("dotenv").config();
@@ -171,7 +171,7 @@ async function addUser(req, res, next) {
 							function(err, affected, resp) {
 								console.log("SEND VERFICATION CODE!!")
 								var body = "Your Verification code for Opay registration is " + randomeNumber + ".";
-								mobile1 = "+91" + '8968680295';
+								mobile1 = "+04" + user.mobile;
 								// sendTwilioMsg(body, mobile1); //OTP NOTIFICATION ON MOBILE NUMBER
 								return res.status(200).send({ status: true, data: user });
 							}
@@ -209,7 +209,7 @@ async function addUser(req, res, next) {
 						} else {
 							console.log("SAving NEW CUSTOMER");
 							var body = "Your Verification code for Opay registration is " + randomeNumber + ".";
-							mobile1 = "+91" + '8968680295';
+							mobile1 = "+04" + mobile;
 
 							//---------------------------------------------
 							const express = require("express");
@@ -904,7 +904,7 @@ async function update_mobile(req, res, next) {
 		}
 		const randomeNumber = generateRandomNumber();
 		var body = "Your Verification code for Opay registration is " + randomeNumber + ".";
-		mobile1 = "+91" + mobile;
+		mobile1 = "+04" + mobile;
 		sendTwilioMsg(body, mobile1);
 
 		customer = Customer;
@@ -948,7 +948,7 @@ async function resend_code(req, res, next) {
 
 		const randomeNumber = generateRandomNumber();
 		var body = "Your Verification code for Opay registration is " + randomeNumber + ".";
-		mobile1 = "+91" + mobile;
+		mobile1 = "+04" + mobile;
 		sendTwilioMsg(body, mobile1);
 
 		return res.send({ status: true, msg: "code resent successfully." });
@@ -1330,7 +1330,7 @@ async function resetNumber(req, res, next) {
 			}
 		},{ new: true },function(err, resp) {
 
-			var mobile1 = "+91" + '8968680295';
+			var mobile1 = "+04" + mobile;
 			const express = require("express");
 			const app = express();
 			require("dotenv").config();
@@ -1381,7 +1381,7 @@ async function resetPin(req,res,Next){
 			}
 		},{ new: true },function(err, resp) {
 
-			var mobile1 = "+91" + '8968680295';
+			var mobile1 = "+04" + mobile;
 			const express = require("express");
 			const app = express();
 			require("dotenv").config();
