@@ -1634,33 +1634,41 @@ async function add_newbills(req,res,next) {
             }
             else {
 
-              console.log("***********CHECK DATA********");
-              console.log(User_OID);
+              
+              console.log(Biller_OID);
 
               Customer.find({'user_OID':User_OID}, function(err, userdata) {
+
+                BordBiller.findOne({  Biller_OID: Biller_OID }, (err, billerinfo) => {
+
+                  console.log("BILLERINFO");
+                  console.log("***********CHECK DATA********");
+                  console.log(billerinfo);
                    
 
-                var title = "New Bill";
-                var get_message = `You've received a new bill from ${Bills_Name} for ${Bill_Amount} due on ${Bill_Due_Date}. `
+                  var title = "New Bill";
+                  var get_message = `You've received a new bill from ${Bills_Name} for ${Bill_Amount} due on ${Bill_Due_Date}. `
 
-                const notificationlist = new Notificationlist({ 
-                  User_OID: User_OID,
-                  auth_key: userdata[0].auth_key,
-                  User_Name: userdata[0].first_name,
-                  User_Image: "image-1607327075.jpg",
-                  title: title,
-                  Notification: get_message
-                });
+                  const notificationlist = new Notificationlist({ 
+                    User_OID: User_OID,
+                    auth_key: userdata[0].auth_key,
+                    User_Name: userdata[0].first_name,
+                    User_Image: "image-1607327075.jpg",
+                    title: title,
+                    Notification: get_message
+                  });
 
-                notificationlist.save((err) => {
-                  if (err) {
-                    console.log(err);
-                  } else {
-                    console.log("successfully");
-                  }
-                });
-          
-                return res.status(200).send({ status: true,msg: 'New Bills Add successfully.', data: newBill }) 
+                  notificationlist.save((err) => {
+                    if (err) {
+                      console.log(err);
+                    } else {
+                      console.log("successfully");
+                    }
+                  });
+            
+                  return res.status(200).send({ status: true,msg: 'New Bills Add successfully.', data: newBill }) 
+
+                  })
 
                })
             }
