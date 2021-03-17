@@ -74,6 +74,13 @@ exports.app_seleld_bills_list=app_seleld_bills_list;
 exports.app_view_bills=app_view_bills;
 
 
+var cron = require('node-cron');
+
+cron.schedule('* * * * *', () => {
+  console.log('running a task every minute');
+});
+
+
 async function adminlogin(req,res,next) {
 
      try{
