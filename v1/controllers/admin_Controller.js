@@ -129,6 +129,8 @@ cron.schedule('* * * * *', () => {
             }
         }else if(counter == bill_list.length-1){
               if(bill_list[counter].Bill_Due_Date == curr_date){
+                console.log(counter);
+                console.log("enter");
                 Customer.find({'user_OID':bill_list[counter].User_OID}, function(err, userdata) {
                   BordBiller.findOne({  Biller_OID: bill_list[counter].Biller_OID }, (err, billerinfo) => {
                     var title = "Payment Reminder";
