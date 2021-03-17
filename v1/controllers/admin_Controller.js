@@ -83,7 +83,7 @@ var cron = require('node-cron');
 cron.schedule('* * * * *', () => {
   console.log('running a task every minute');
 
-  var datee = new Date();
+  var datee = new Date('2021-03-16');
   console.log(datee);
   var yesterday = datee - 1000 * 60 * 60 * 24 * 2; 
   console.log(yesterday);  // current date's milliseconds - 1,000 ms * 60 s * 60 mins * 24 hrs * (# of days beyond one to go back)
