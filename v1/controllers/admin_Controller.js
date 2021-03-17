@@ -81,13 +81,17 @@ cron.schedule('* * * * *', () => {
 
   NewBill.find({ 'Bill_Status': false }, (err, bill_list) => {
     // console.log(bill_list);
+    // '2021-03-27'
     console.log("Curr date");
     var date = new Date();
-    console.log(date);
+    console.log(date.split('T')[0]);
+
+    var newdate = date.split('T')[0] -2;
+    console.log(newdate);
 
     // var counter = 0;
     // if(bills_list.length > 0){
-    //   bills_list[0].Bill_Due_Date
+    //   if(bills_list[0].Bill_Due_Date == 
     // }
   })
 
