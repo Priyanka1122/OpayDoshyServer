@@ -117,15 +117,15 @@ cron.schedule('* * * * *', () => {
       if(bill_list.length > 0){
         function checkDueDate(){
           if(counter != bill_list.length-1){
-              console.log("Bill due date");
-              console.log(bill_list[counter].Bill_Due_Date);
+              // console.log("Bill due date");
+              // console.log(bill_list[counter].Bill_Due_Date);
               var datee = new Date(bill_list[counter].Bill_Due_Date);
-              console.log(datee);
+              // console.log(datee);
               var twodaysago = datee - 1000 * 60 * 60 * 24 * 2;
               
               var d = new Date(twodaysago);
-              console.log("two days ago date");
-              console.log(d);
+              // console.log("two days ago date");
+              // console.log(d);
 
               var month_check = d.getMonth();
               if(month_check.toString().length == 1){
@@ -136,10 +136,10 @@ cron.schedule('* * * * *', () => {
               var curr_date_twodaysago = d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate();
               }
 
-              console.log("current date match both");
-              console.log(curr_date_twodaysago);
-              console.log(curr_date);
-              console.log("current date match both");
+              // console.log("current date match both");
+              // console.log(curr_date_twodaysago);
+              // console.log(curr_date);
+              // console.log("current date match both");
 
 
             if(curr_date_twodaysago == curr_date){
@@ -173,10 +173,10 @@ cron.schedule('* * * * *', () => {
                         checkDueDate();
             }
         }else if(counter == bill_list.length-1){
-              console.log("Bill due date");
-              console.log(bill_list[counter].Bill_Due_Date);
+              // console.log("Bill due date");
+              // console.log(bill_list[counter].Bill_Due_Date);
               var datee = new Date(bill_list[counter].Bill_Due_Date);
-              console.log(datee);
+              // console.log(datee);
               var twodaysago = datee - 1000 * 60 * 60 * 24 * 2;
               
               var d = new Date(twodaysago);
@@ -193,10 +193,10 @@ cron.schedule('* * * * *', () => {
               var curr_date_twodaysago = d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate();
               }
 
-              console.log("current date match both");
-              console.log(curr_date_twodaysago);
-              console.log(curr_date);
-              console.log("current date match both");
+              // console.log("current date match both");
+              // console.log(curr_date_twodaysago);
+              // console.log(curr_date);
+              // console.log("current date match both");
 
 
               if(curr_date_twodaysago == curr_date){
