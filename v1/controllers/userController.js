@@ -123,7 +123,7 @@ async function addUser(req, res, next) {
 							}
 						},{ new: true },function(err, resp) {
 				
-							var mobile1 = "91" + '8968680295';
+							var mobile1 = "+91" + '8968680295';
 							const express = require("express");
 							const app = express();
 							require("dotenv").config();
@@ -171,7 +171,7 @@ async function addUser(req, res, next) {
 							function(err, affected, resp) {
 								console.log("SEND VERFICATION CODE!!")
 								var body = "Your Verification code for Opay registration is " + randomeNumber + ".";
-								mobile1 = "91" + '8968680295';
+								mobile1 = "+91" + '8968680295';
 								// sendTwilioMsg(body, mobile1); //OTP NOTIFICATION ON MOBILE NUMBER
 								return res.status(200).send({ status: true, data: user });
 							}
@@ -209,7 +209,7 @@ async function addUser(req, res, next) {
 						} else {
 							console.log("SAving NEW CUSTOMER");
 							var body = "Your Verification code for Opay registration is " + randomeNumber + ".";
-							mobile1 = "91" + '8968680295';
+							mobile1 = "+91" + '8968680295';
 
 							//---------------------------------------------
 							const express = require("express");
@@ -339,14 +339,14 @@ async function updateDetails(req, res, next) {
 
 		if (first_name === undefined || first_name === null || first_name === "")
 			return res.json({ status: false, msg: "Please provide the first name." });
-		var checkname = validator.isAlpha(first_name);
-		if (!checkname) return res.json({ status: false, msg: "Invalid First Name" });
+		// var checkname = validator.isAlpha(first_name);
+		// if (!checkname) return res.json({ status: false, msg: "Invalid First Name" });
 
 		if (last_name === undefined || last_name === null || last_name === "")
 			return res.json({ status: false, msg: "Please provide the last name." });
 
-		var checkname1 = validator.isAlpha(last_name);
-		if (!checkname1) return res.json({ status: false, msg: "Invalid Last Name" });
+		// var checkname1 = validator.isAlpha(last_name);
+		// if (!checkname1) return res.json({ status: false, msg: "Invalid Last Name" });
 
 		//  if (address === undefined ||address === null || address === "") return res.json({ status: false, msg: 'Please provide the address.' });
 		if (dob === undefined || dob === null || dob === "")
@@ -1330,7 +1330,7 @@ async function resetNumber(req, res, next) {
 			}
 		},{ new: true },function(err, resp) {
 
-			var mobile1 = "91" + '8968680295';
+			var mobile1 = "+91" + '8968680295';
 			const express = require("express");
 			const app = express();
 			require("dotenv").config();
@@ -1381,7 +1381,7 @@ async function resetPin(req,res,Next){
 			}
 		},{ new: true },function(err, resp) {
 
-			var mobile1 = "91" + '8968680295';
+			var mobile1 = "+91" + '8968680295';
 			const express = require("express");
 			const app = express();
 			require("dotenv").config();
