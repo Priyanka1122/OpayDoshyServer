@@ -192,8 +192,8 @@ cron.schedule('* * * * *', () => {
             if(bill_list2[counter2].Bill_Due_Date == yesterdaydatecheck){
                 Customer.find({'user_OID':bill_list2[counter2].User_OID}, function(err, userdata) {
                   BordBiller.findOne({  Biller_OID: bill_list2[counter2].Biller_OID }, (err, billerinfo) => {
-                    var title = "Payment Reminder";
-                    var get_message = `Just a reminder that your ${billerinfo.Biller_Name} bill for ${'$'+bill_list2[counter2].Bill_Amount} is due on ${bill_list2[counter2].Bill_Due_Date}. `
+                    var title = "Payment overdue";
+                    var get_message = `Just a note that your ${billerinfo.Biller_Name} bill for ${'$'+bill_list2[counter2].Bill_Amount} is now overdue. `
 
                     const notificationlist = new Notificationlist({ 
                       User_OID: bill_list2[counter2].User_OID,
@@ -223,8 +223,8 @@ cron.schedule('* * * * *', () => {
               if(bill_list2[counter2].Bill_Due_Date == yesterdaydatecheck){
                 Customer.find({'user_OID':bill_list2[counter2].User_OID}, function(err, userdata) {
                   BordBiller.findOne({  Biller_OID: bill_list2[counter2].Biller_OID }, (err, billerinfo) => {
-                    var title = "Payment Reminder";
-                    var get_message = `Just a reminder that your ${billerinfo.Biller_Name} bill for ${'$'+bill_list2[counter2].Bill_Amount} is due on ${bill_list2[counter2].Bill_Due_Date}. `
+                    var title = "Payment overdue";
+                    var get_message = `Just a note that your ${billerinfo.Biller_Name} bill for ${'$'+bill_list2[counter2].Bill_Amount} is now overdue. `
 
                     const notificationlist = new Notificationlist({ 
                       User_OID: bill_list2[counter2].User_OID,
