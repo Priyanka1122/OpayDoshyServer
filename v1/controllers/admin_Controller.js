@@ -188,6 +188,7 @@ cron.schedule('* * * * *', () => {
         function checkDueDate2(){
           if(counter2 != bill_list2.length-1){
             console.log("check for overdue");
+            var curr_date2 = '2021-03-18';
             console.log(bill_list2[counter2].Bill_Due_Date);
             console.log(curr_date2);
             console.log(curr_date2 - bill_list2[counter2].Bill_Due_Date);
