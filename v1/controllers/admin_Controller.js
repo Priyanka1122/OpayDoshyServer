@@ -1573,7 +1573,7 @@ async function  get_terms_condition(req,res,next) {
 
 async function add_newbills(req,res,next) {
 
-
+  console.log("add_newbills");
 
   try{
 
@@ -1638,7 +1638,7 @@ async function add_newbills(req,res,next) {
             }
             else {
 
-              console.log("***********8CHECK DATA********");
+              console.log("***********CHECK DATA********");
               console.log(User_OID);
 
               var userdata = Customer.findOne({user_OID: User_OID});
