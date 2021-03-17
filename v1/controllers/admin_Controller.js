@@ -83,13 +83,7 @@ var cron = require('node-cron');
 cron.schedule('* * * * *', () => {
   console.log('running a task every minute');
 
-  var datee = new Date('2021-03-16');
-  console.log(datee);
-  var yesterday = datee - 1000 * 60 * 60 * 24 * 2; 
-  console.log(yesterday);  // current date's milliseconds - 1,000 ms * 60 s * 60 mins * 24 hrs * (# of days beyond one to go back)
 
-  var d = new Date(yesterday);
-  console.log(d);
 
 
 
@@ -114,11 +108,23 @@ cron.schedule('* * * * *', () => {
 
 
 
+
+
     var counter = 0;
     
       if(bill_list.length > 0){
         function checkDueDate(){
           if(counter != bill_list.length-1){
+
+
+              var datee = new Date(bill_list[counter].Bill_Due_Date);
+              console.log(datee);
+              var twodaysago = datee - 1000 * 60 * 60 * 24 * 2; 
+              console.log(twodaysago);  
+              var d = new Date(twodaysago);
+              console.log(d);
+
+
             if(bill_list[counter].Bill_Due_Date == curr_date){
                 Customer.find({'user_OID':bill_list[counter].User_OID}, function(err, userdata) {
                   BordBiller.findOne({  Biller_OID: bill_list[counter].Biller_OID }, (err, billerinfo) => {
