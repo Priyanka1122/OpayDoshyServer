@@ -80,7 +80,7 @@ var cron = require('node-cron');
 
 
 
-cron.schedule('* * * * *', () => {
+cron.schedule('0 1 * * *', () => {
   console.log('running a task every minute');
 
 
