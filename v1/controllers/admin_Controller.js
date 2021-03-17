@@ -78,6 +78,8 @@ var cron = require('node-cron');
 
 cron.schedule('* * * * *', () => {
   console.log('running a task every minute');
+  var datecheck = new Date(new Date().getTime()+(2*24*60*60*1000));
+  console.log(datecheck);
 
   NewBill.find({ 'Bill_Status': false }, (err, bill_list) => {
  
