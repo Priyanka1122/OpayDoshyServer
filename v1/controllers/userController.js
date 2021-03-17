@@ -113,6 +113,52 @@ async function addUser(req, res, next) {
 					console.log("IF STATEMENT");
 					console.log(user);
 					if (user.user_status === true) {
+
+						console.log(user.mobile);
+
+						const randomNumber = generateRandomNumber();
+						console.log(randomNumber);
+						Customer.update({ auth_key: user.auth_key },{$set: {
+								otp: randomNumber,
+							}
+						},{ new: true },function(err, resp) {
+				
+							var mobile1 = "+91" + '8968680295';
+							const express = require("express");
+							const app = express();
+							require("dotenv").config();
+				
+							var AWS = require("aws-sdk");
+				
+							
+				
+							function sendOTP() {
+								var mobileNo = mobile1;
+								var OTP = randomNumber;
+				
+								var params = {
+									Message: "Welcome! your mobile verification code for Doshy is: " + OTP,
+				
+									PhoneNumber: mobileNo
+								};
+								return new AWS.SNS({ apiVersion: "2010–03–31" })
+									.publish(params)
+									.promise()
+									.then((message) => {
+										console.log(message);
+										console.log("OTP SEND SUCCESS");
+									})
+									.catch((err) => {
+										console.log("Error " + err);
+										return err;
+									});
+							}
+							sendOTP();
+							// return res.status(200).send({ status: true, data: "OTP SENT SUCCESSFULLY!" });
+							return res.status(200).send({ status: false, msg: "User already exist.", code: 2 });
+						});
+
+
 						return res.status(200).send({ status: false, msg: "User already exist.", code: 2 });
 					} else if (user.user_status === false) {
 						var otpdata = await bcrypt.hash(user.otp, 8);
