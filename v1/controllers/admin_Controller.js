@@ -83,7 +83,8 @@ cron.schedule('* * * * *', () => {
     // console.log(bill_list);
     // '2021-03-27'
     console.log("Curr date");
-    var date = new Date();
+    const date = new Date();
+    console.log(date);
     console.log(date.split('T')[0]);
 
     var newdate = date.split('T')[0] -2;
