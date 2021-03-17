@@ -80,9 +80,8 @@ cron.schedule('* * * * *', () => {
   console.log('running a task every minute');
 
   NewBill.find({ 'Bill_Status': false }, (err, bill_list) => {
-    // console.log(bill_list);
-    // '2021-03-27'
-    console.log("Curr date");
+ 
+ 
     const date = new Date();
     console.log(date.getFullYear()+'-'+(date.getMonth()+1)+'-'+date.getDate());
     var curr_date = date.getFullYear()+'-'+(date.getMonth()+1)+'-'+date.getDate();
@@ -93,10 +92,16 @@ cron.schedule('* * * * *', () => {
     
       if(bill_list.length > 0){
         function checkDueDate(){
+          console.log("Enter check due date");
           if(counter != bill_list.length-1){
             if(bill_list[counter].Bill_Due_Date == curr_date){
+              console.log("equal");
                 Customer.find({'user_OID':bill_list[counter].User_OID}, function(err, userdata) {
+                  console.log("check user data");
+                  console.log(userdata);
                   BordBiller.findOne({  Biller_OID: bill_list[counter].Biller_OID }, (err, billerinfo) => {
+                    console.log("check biller data");
+                    console.log(billerinfo);
                     var title = "Payment Reminder";
                     var get_message = `Just a reminder that your ${billerinfo.Biller_Name} bill for ${bill_list[counter].Bill_Due_Date} is due on ${bill_list[counter].Bill_Amount}. `
 
@@ -114,10 +119,11 @@ cron.schedule('* * * * *', () => {
                         console.log(err);
                       } else {
                         console.log("successfully");
+                        counter += 1;
+                        checkDueDate();
                       }
                     });
-                    counter += 1;
-                    checkDueDate();
+
                   })
                 })
             }
@@ -151,11 +157,7 @@ cron.schedule('* * * * *', () => {
 
       }
     }
-
-    checkDueDate();
   })
-
-
 });
 
 
