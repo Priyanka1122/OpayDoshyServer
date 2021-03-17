@@ -117,14 +117,18 @@ cron.schedule('* * * * *', () => {
       if(bill_list.length > 0){
         function checkDueDate(){
           if(counter != bill_list.length-1){
-
-
+              console.log("Bill due date");
+              console.log(bill_list[counter].Bill_Due_Date);
               var datee = new Date(bill_list[counter].Bill_Due_Date);
               console.log(datee);
-              var twodaysago = datee - 1000 * 60 * 60 * 24 * 2; 
-              console.log(twodaysago);  
+              var twodaysago = datee - 1000 * 60 * 60 * 24 * 2;
+              
               var d = new Date(twodaysago);
+              console.log("two days ago date");
               console.log(d);
+
+              console.log("current date");
+              console.log(curr_date);
 
 
             if(bill_list[counter].Bill_Due_Date == curr_date){
@@ -158,6 +162,20 @@ cron.schedule('* * * * *', () => {
                         checkDueDate();
             }
         }else if(counter == bill_list.length-1){
+              console.log("Bill due date");
+              console.log(bill_list[counter].Bill_Due_Date);
+              var datee = new Date(bill_list[counter].Bill_Due_Date);
+              console.log(datee);
+              var twodaysago = datee - 1000 * 60 * 60 * 24 * 2;
+              
+              var d = new Date(twodaysago);
+              console.log("two days ago date");
+              console.log(d);
+
+              console.log("current date");
+              console.log(curr_date);
+
+
               if(bill_list[counter].Bill_Due_Date == curr_date){
                 Customer.find({'user_OID':bill_list[counter].User_OID}, function(err, userdata) {
                   BordBiller.findOne({  Biller_OID: bill_list[counter].Biller_OID }, (err, billerinfo) => {
