@@ -78,7 +78,7 @@ exports.app_view_bills=app_view_bills;
 var cron = require('node-cron');
 
 
-  ​var datee = new Date('2021-03-16');
+  ​var datee = new Date();
   console.log(datee);
   var yesterday = datee - 1000 * 60 * 60 * 24 * 2;   // current date's milliseconds - 1,000 ms * 60 s * 60 mins * 24 hrs * (# of days beyond one to go back)
   yesterday = new Date(yesterday);
