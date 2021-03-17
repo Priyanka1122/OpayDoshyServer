@@ -111,6 +111,7 @@ async function addUser(req, res, next) {
 				if (user) {
 
 					console.log("IF STATEMENT");
+					console.log(user);
 					if (user.user_status === true) {
 						return res.status(200).send({ status: false, msg: "User already exist.", code: 2 });
 					} else if (user.user_status === false) {
