@@ -156,6 +156,7 @@ cron.schedule('* * * * *', () => {
         }
 
       }
+      checkDueDate();
     }
   })
 });
