@@ -85,14 +85,50 @@ cron.schedule('* * * * *', () => {
     console.log("Curr date");
     const date = new Date();
     console.log(date.getFullYear()+'-'+(date.getMonth()+1)+'-'+date.getDate());
+    var curr_date = date.getFullYear()+'-'+(date.getMonth()+1)+'-'+date.getDate();
 
-    // var newdate = date.split('T')[0] -2;
-    // console.log(newdate);
 
-    // var counter = 0;
-    // if(bills_list.length > 0){
-    //   if(bills_list[0].Bill_Due_Date == 
-    // }
+
+    var counter = 0;
+    function checkDueDate(){
+      if(bills_list.length > 0){
+        if(bills_list[counter].Bill_Due_Date == curr_date){
+        
+
+        Customer.find({'user_OID':User_OID}, function(err, userdata) {
+
+          BordBiller.findOne({  Biller_OID: bills_list[counter].Biller_OID }, (err, billerinfo) => {
+
+            var title = "Payment Reminder";
+            var get_message = `Just a reminder that your ${billerinfo.Biller_Name} bill for ${bills_list[counter].Bill_Due_Date} is due on ${bills_list[counter].Bill_Amount}. `
+
+            const notificationlist = new Notificationlist({ 
+              User_OID: User_OID,
+              auth_key: userdata[0].auth_key,
+              User_Name: userdata[0].first_name,
+              User_Image: "image-1607327075.jpg",
+              title: title,
+              Notification: get_message
+            });
+
+            notificationlist.save((err) => {
+              if (err) {
+                console.log(err);
+              } else {
+                console.log("successfully");
+              }
+            });
+
+          })
+
+        })
+
+
+        }
+      }
+    }
+
+    checkDueDate();
   })
 
 
