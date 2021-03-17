@@ -93,6 +93,8 @@ cron.schedule('* * * * *', () => {
 
 
   NewBill.find({ 'Bill_Status': false }, (err, bill_list) => {
+
+    console.log(bill_list);
  
  
     const date = new Date();
@@ -196,10 +198,10 @@ cron.schedule('* * * * *', () => {
 
     var month = yesterdaydate.getMonth();
     if(month.toString().length == 1){
-    console.log(yesterdaydate.getFullYear()+'-'+('0'+(yesterdaydate.getMonth()+1))+'-'+yesterdaydate.getDate());
+    // console.log(yesterdaydate.getFullYear()+'-'+('0'+(yesterdaydate.getMonth()+1))+'-'+yesterdaydate.getDate());
     var yesterdaydatecheck = yesterdaydate.getFullYear()+'-'+('0'+(yesterdaydate.getMonth()+1))+'-'+yesterdaydate.getDate();
     }else{
-    console.log(yesterdaydate.getFullYear()+'-'+(yesterdaydate.getMonth()+1)+'-'+yesterdaydate.getDate());
+    // console.log(yesterdaydate.getFullYear()+'-'+(yesterdaydate.getMonth()+1)+'-'+yesterdaydate.getDate());
     var yesterdaydatecheck = yesterdaydate.getFullYear()+'-'+(yesterdaydate.getMonth()+1)+'-'+yesterdaydate.getDate();
     }
 
@@ -211,7 +213,6 @@ cron.schedule('* * * * *', () => {
     if(bill_list2.length > 0){
         function checkDueDate2(){
           if(counter2 != bill_list2.length-1){
-            console.log("check for overdue");
             if(bill_list2[counter2].Bill_Due_Date == yesterdaydatecheck){
                 Customer.find({'user_OID':bill_list2[counter2].User_OID}, function(err, userdata) {
                   BordBiller.findOne({  Biller_OID: bill_list2[counter2].Biller_OID }, (err, billerinfo) => {
