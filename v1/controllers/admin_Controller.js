@@ -1641,7 +1641,7 @@ async function add_newbills(req,res,next) {
               console.log("***********CHECK DATA********");
               console.log(User_OID);
 
-              Customer.findOne({'user_OID':User_OID}, function(err, resp) {
+              Customer.find({'user_OID':User_OID}, function(err, resp) {
                 console.log("GET ALL DATA");
                 console.log(resp.device_token);
               })
