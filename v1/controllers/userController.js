@@ -185,7 +185,7 @@ async function addUser(req, res, next) {
 					if (user1.length > 0) {
 						var text = user1[0].user_OID;
 						var n = text;
-						var data = n.replace(/(\d+)/, (match) => ("0".repeat(8) + ++match).substr(-8));
+						var data = n.replace(/(\d+)/, (match) => ("0".repeat(8) + ++(Customer.find({}) + 1)).substr(-8));
 					} else {
 						var data = "UR00000001";
 					}
